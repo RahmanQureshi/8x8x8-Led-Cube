@@ -235,58 +235,31 @@ void LedCubeSequences::flash(byte leds[8][8], int delayLength, int numFlashes)
 }
 
 // =====================================================================================================
-// rotate
-// Description: rotates the current LED display about the center z-axis
+// rotate360
+// Description: rotates a maximum of 100 LEDs in the current display
+// The problem with this implementation is if an LED goes off the cube, or LEDs overlap (due to rounding), information is lost.
 // =====================================================================================================
-void LedCubeSequences::rotate360(byte leds[8][8])
+void LedCubeSequences::rotate360(byte leds[8][8], LED ledList[100], int n)
 {
-  LED ledList[512];
-  // populate list of LEDs
-  for(int z=0; z<8; z++)
-  {
-    for(int y=0; y<8; y++)
-    {
-      for(int x=0; x<8; x++)
-      {
-        ledList[z*64+y*8+x].x = x;
-        ledList[z*64+y*8+x].y = y;
-        ledList[z*64+y*8+x].z = z;
-        if( (leds[z][y] & 1<<x) > 0)
-        {
-          ledList[z*64+y*8+x].state = 1;
-        } else
-        {
-          ledList[z*64+y*8+x].state = 0;
-        }
-      }
-    }
-  }
-
   int degreesPerStep = 1;
   float cosDegrees = cos(degreesPerStep*2*3.14/360.0); // 1 degree increments
   float sinDegrees = sin(degreesPerStep*2*3.14/360.0);
 
-  for(int i=0; i<360/degreesPerStep; i++)
+  for(int d=0; d<360/degreesPerStep; d++)
   {
-    // rotate LEDs
-    for(int j=0; j<512; j++)
+    // rotate LEDs in LED list
+    for(int i=0; i<n; i++)
     {
       if(ledList[i].state == 1)
       {
-        float x = ledList[i].x - 3.5;
-        float y = ledList[i].y - 3.5;
-        float z = ledList[i].z;
-
-        ledList[i].x = cosDegrees*x - sinDegrees*y + 3.5;
-        ledList[i].y = sinDegrees*x + cosDegrees*y + 3.5;
-        ledList[i].z = z;
+        ledList[i].x = cosDegrees*(ledList[i].x - 3.5) - sinDegrees*(ledList[i].y - 3.5) + 3.5;
+        ledList[i].y = sinDegrees*(ledList[i].x - 3.5) + cosDegrees*(ledList[i].y - 3.5) + 3.5;
+        ledList[i].z = ledList[i].z;
       }
     }
-
     LedCubeStills::clearAll(leds); // clear here so that some of the computation can be finished before turning LEDs off
-
     // display LEDs
-    for(int j=0; j<512; j++)
+    for(int i=0; i<n; i++)
     {
       int x = ledList[i].x + 0.5;
       int y = ledList[i].y + 0.5;
@@ -296,8 +269,12 @@ void LedCubeSequences::rotate360(byte leds[8][8])
         leds[z][y] |= 1 << x;
       }
     }
-    delay(100);
   }
+}
+
+bool LedCubeSequences::ledOn(byte leds[8][8], int x, int y, int z)
+{
+  return ( leds[z][y] & (1<<x) ) > 0;
 }
 
 bool LedCubeSequences::inBounds(int x, int y, int z)
