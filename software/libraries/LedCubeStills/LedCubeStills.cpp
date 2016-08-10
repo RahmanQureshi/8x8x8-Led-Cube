@@ -14,10 +14,10 @@ void LedCubeStills::xyPlane(byte leds[8][8], int planeIndex)
     {
       if(i == planeIndex)
       {
-        leds[i][j] = 0b11111111;
+        leds[i][j] |= 0b11111111;
       } else 
       {
-        leds[i][j] = 0b00000000;
+        leds[i][j] |= 0b00000000;
       }
     }
   }
@@ -37,10 +37,10 @@ void LedCubeStills::xzPlane(byte leds[8][8], int planeIndex)
     {
       if(j == planeIndex) 
       {
-        leds[i][j] = 0b11111111;
+        leds[i][j] |= 0b11111111;
       } else
       {
-        leds[i][j] = 0b00000000;
+        leds[i][j] |= 0b00000000;
       }
     }
   }
@@ -58,7 +58,7 @@ void LedCubeStills::yzPlane(byte leds[8][8], int planeIndex)
   {
     for(int j = 0; j < 8; j++)
     {
-      leds[i][j] = 1 << planeIndex;
+      leds[i][j] |= 1 << planeIndex;
     }
   }
 }
@@ -80,15 +80,30 @@ void LedCubeStills::flood(byte leds[8][8])
 
 void LedCubeStills::wireFrame(byte leds[8][8])
 {
-  /*
-  int xmin = 0;
-  int xmax = 7;
-  int ymin = 0;
-  int ymax = 7;
-  int zmin = 0;
-  int zmax = 7;
-  leds[zmin][ymin] = 
-  */
+  for(int z=0; z<8; z++)
+  {
+    for(int y=0; y<8; y=y+7)
+    {
+      leds[z][y] |= 1<<0;
+      leds[z][y] |= 1<<7;
+    }
+  }
+  for(int y=0; y<8; y++)
+  {
+    for(int x=0; x<8; x=x+7)
+    {
+      leds[0][y] |= 1<<x;
+      leds[7][y] |= 1<<x;
+    }
+  }
+  for(int x=0; x<8; x++)
+  {
+    for(int y=0; y<8; y=y+7)
+    {
+      leds[0][y] |= 1<<x;
+      leds[7][y] |= 1<<x; 
+    }
+  }
 }
 
 // =====================================================================================================

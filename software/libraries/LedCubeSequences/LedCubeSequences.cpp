@@ -241,11 +241,12 @@ void LedCubeSequences::flash(byte leds[8][8], int delayLength, int numFlashes)
 // =====================================================================================================
 void LedCubeSequences::rotate360(byte leds[8][8], LED ledList[100], int n)
 {
-  int degreesPerStep = 1;
-  float cosDegrees = cos(degreesPerStep*2*3.14/360.0); // 1 degree increments
-  float sinDegrees = sin(degreesPerStep*2*3.14/360.0);
+  float pi = 3.141593;
+  int radsPerStep = pi/2;
+  float cosDegrees = cos(radsPerStep); // 1 degree increments
+  float sinDegrees = sin(radsPerStep);
 
-  for(int d=0; d<360/degreesPerStep; d++)
+  for(int d=0; d<2*pi/radsPerStep; d++)
   {
     // rotate LEDs in LED list
     for(int i=0; i<n; i++)
@@ -269,6 +270,47 @@ void LedCubeSequences::rotate360(byte leds[8][8], LED ledList[100], int n)
         leds[z][y] |= 1 << x;
       }
     }
+    delay(1000);
+  }
+}
+
+void LedCubeSequences::crossingxzPlanes(byte leds[8][8])
+{
+  for(int i=0; i<4; i++)
+  {
+    delay(100);
+    LedCubeStills::clearAll(leds);
+    LedCubeStills::xzPlane(leds, i);
+    LedCubeStills::xzPlane(leds, 7-i);
+  }
+  for(int i=0; i<3; i++)
+  {
+    delay(100);
+    LedCubeStills::clearAll(leds);
+    LedCubeStills::xzPlane(leds, 2-i);
+    LedCubeStills::xzPlane(leds, 5+i);
+  }
+  delay(500);
+}
+
+void LedCubeSequences::xy0Toxz0(byte leds[8][8])
+{
+  for(int stop=8; stop>=0; stop--)
+  {
+    for(int y=0; y<8; y++)
+    {
+      int z = y;
+      if (y<stop)
+      {
+        leds[z][0] = 0b00000000;
+        leds[0][y] = 0b11111111;
+      } else
+      {
+        leds[7-z][0] = 0b11111111;
+        leds[0][y] = 0b00000000;
+      }
+    }
+    delay(100);
   }
 }
 
