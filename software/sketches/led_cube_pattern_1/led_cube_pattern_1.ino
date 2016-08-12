@@ -45,6 +45,33 @@ void setup()
 
 void loop()
 {
+  for(int i=0; i<3; i++)
+  {
+    LedCubeStills::xyPlane(leds, i);
+    LedCubeStills::xyPlane(leds, 7-i);
+    delay(100);
+    LedCubeStills::clearAll(leds);
+  }
+  LedCubeStills::clearAll(leds);
+  
+  for(int i=0; i<8; i++)
+  {
+    LedCubeStills::xzPlane(leds, i);
+    LedCubeStills::xzPlane(leds, 7-i);
+    delay(100);
+    LedCubeStills::clearAll(leds);
+  }
+  LedCubeStills::clearAll(leds);
+
+  for(int i=0; i<8; i++)
+  {
+    LedCubeStills::yzPlane(leds, i);
+    LedCubeStills::yzPlane(leds, 7-i);
+    delay(100);
+    LedCubeStills::clearAll(leds);
+  }
+  LedCubeStills::clearAll(leds);
+  
   LedCubeSequences::lettersAcrossPlanes(leds, "HELLO", 5);
   
   for(int i=0; i<5; i++)
@@ -64,6 +91,8 @@ void loop()
   LedCubeStills::clearAll(leds);
   
   LedCubeSequences::randomBursts(leds, 350, 10);
+  LedCubeStills::clearAll(leds);
+  
 }
 
 ISR(TIMER2_COMPA_vect) 
