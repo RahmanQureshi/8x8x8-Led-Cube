@@ -1,5 +1,60 @@
 #include "LedCubeSequences.h"
 
+/* Private */
+
+bool LedCubeSequences::ledOn(byte leds[8][8], int x, int y, int z)
+{
+  return ( leds[z][y] & (1<<x) ) > 0;
+}
+
+int LedCubeSequences::getNumLedsOn(byte leds[8][8])
+{
+  int numLedsOn = 0;
+  for(int z=0; z<8; z++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        if(ledOn(leds, x, y, z)) numLedsOn++;
+      }
+    }
+  }
+  return numLedsOn;
+}
+
+bool LedCubeSequences::inBounds(int x, int y, int z)
+{
+  return (x >= 0 && x <= 7 
+    && y >= 0 && y <= 7
+    && z >= 0 && z <= 8);
+}
+
+int LedCubeSequences::fillLedList(byte ledArray[8][8], LED ledList[128])
+{
+  int i = 0;
+  for(int z=0; z<8; z++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        if(ledOn(ledArray, x, y, z))
+        {
+          ledList[i].x = x;
+          ledList[i].y = y;
+          ledList[i].z = z;
+          i = i+1;
+          if(i==128) return i;
+        }
+      }
+    }
+  }
+  return i;
+}
+
+/* Public */
+
 // =====================================================================================================
 // wave() 
 // Description: Runs a wave in the y-axis for 5 wavelengths.
@@ -235,42 +290,45 @@ void LedCubeSequences::flash(byte leds[8][8], int delayLength, int numFlashes)
 }
 
 // =====================================================================================================
-// rotate360
-// Description: rotates a maximum of 100 LEDs in the current display
-// The problem with this implementation is if an LED goes off the cube, or LEDs overlap (due to rounding), information is lost.
+// rotateCenterZ
+// Description: rotates a maximum of 128 LEDs that are on in the current display.
+// Be very careful. Requires a lot of memory for 128 LEDs!
 // =====================================================================================================
-void LedCubeSequences::rotate360(byte leds[8][8], LED ledList[100], int n)
+void LedCubeSequences::rotateCenterZ(byte leds[8][8], float radStep, int numSteps, int delayLength)
 {
   float pi = 3.141593;
-  int radsPerStep = pi/2;
-  float cosDegrees = cos(radsPerStep); // 1 degree increments
-  float sinDegrees = sin(radsPerStep);
+  float cosVal = cos(radStep); // 1 degree increments
+  float sinVal = sin(radStep);
 
-  for(int d=0; d<2*pi/radsPerStep; d++)
+  int numLedsOn = getNumLedsOn(leds);
+  LED ledList[numLedsOn];
+  fillLedList(leds, ledList);
+
+  for(int d=0; d<numSteps; d++)
   {
     // rotate LEDs in LED list
-    for(int i=0; i<n; i++)
+    for(int i=0; i<numLedsOn; i++)
     {
-      if(ledList[i].state == 1)
-      {
-        ledList[i].x = cosDegrees*(ledList[i].x - 3.5) - sinDegrees*(ledList[i].y - 3.5) + 3.5;
-        ledList[i].y = sinDegrees*(ledList[i].x - 3.5) + cosDegrees*(ledList[i].y - 3.5) + 3.5;
-        ledList[i].z = ledList[i].z;
-      }
+      float xnew;
+      float ynew;
+      xnew = cosVal*(ledList[i].x - 3.5) - sinVal*(ledList[i].y - 3.5) + 3.5;
+      ynew = sinVal*(ledList[i].x - 3.5) + cosVal*(ledList[i].y - 3.5) + 3.5;
+      ledList[i].x = xnew;
+      ledList[i].y = ynew;
     }
     LedCubeStills::clearAll(leds); // clear here so that some of the computation can be finished before turning LEDs off
     // display LEDs
-    for(int i=0; i<n; i++)
+    for(int i=0; i<numLedsOn; i++)
     {
       int x = ledList[i].x + 0.5;
       int y = ledList[i].y + 0.5;
       int z = ledList[i].z + 0.5;
-      if(ledList[i].state == 1 && inBounds(x, y, z))
+      if(inBounds(x, y, z))
       {
         leds[z][y] |= 1 << x;
       }
     }
-    delay(1000);
+    delay(delayLength);
   }
 }
 
@@ -312,16 +370,4 @@ void LedCubeSequences::xy0Toxz0(byte leds[8][8])
     }
     delay(100);
   }
-}
-
-bool LedCubeSequences::ledOn(byte leds[8][8], int x, int y, int z)
-{
-  return ( leds[z][y] & (1<<x) ) > 0;
-}
-
-bool LedCubeSequences::inBounds(int x, int y, int z)
-{
-  return (x >= 0 && x <= 7 
-    && y >= 0 && y <= 7
-    && z >= 0 && z <= 8);
 }
