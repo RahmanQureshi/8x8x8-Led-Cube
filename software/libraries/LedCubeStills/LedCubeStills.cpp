@@ -467,5 +467,64 @@ void LedCubeStills::letter(byte leds[8][8], char letter, int planeIndex)
 
       break;
 
+    case 'R':
+      leds[0][2] |= 1 << planeIndex;
+      leds[1][2] |= 1 << planeIndex;
+      leds[2][2] |= 1 << planeIndex;
+      leds[3][2] |= 1 << planeIndex;
+      leds[4][2] |= 1 << planeIndex;
+      leds[5][2] |= 1 << planeIndex;
+      leds[6][2] |= 1 << planeIndex;
+      leds[7][2] |= 1 << planeIndex;
+
+      leds[0][7] |= 1 << planeIndex;
+      leds[1][6] |= 1 << planeIndex;
+      leds[2][5] |= 1 << planeIndex;
+      leds[3][5] |= 1 << planeIndex;
+      leds[4][5] |= 1 << planeIndex;
+      leds[5][5] |= 1 << planeIndex;
+      leds[6][5] |= 1 << planeIndex;
+      leds[7][5] |= 1 << planeIndex;
+
+      leds[7][2] |= 1 << planeIndex;
+      leds[7][3] |= 1 << planeIndex;
+      leds[7][4] |= 1 << planeIndex;
+      leds[7][5] |= 1 << planeIndex;
+
+      leds[3][2] |= 1 << planeIndex;
+      leds[3][3] |= 1 << planeIndex;
+      leds[3][4] |= 1 << planeIndex;
+      leds[3][5] |= 1 << planeIndex;
+
+      break;
+
+    case 'T':
+      leds[0][3] |= 1 << planeIndex;
+      leds[1][3] |= 1 << planeIndex;
+      leds[2][3] |= 1 << planeIndex;
+      leds[3][3] |= 1 << planeIndex;
+      leds[4][3] |= 1 << planeIndex;
+      leds[5][3] |= 1 << planeIndex;
+      leds[6][3] |= 1 << planeIndex;
+      leds[7][3] |= 1 << planeIndex;
+
+      leds[0][4] |= 1 << planeIndex;
+      leds[1][4] |= 1 << planeIndex;
+      leds[2][4] |= 1 << planeIndex;
+      leds[3][4] |= 1 << planeIndex;
+      leds[4][4] |= 1 << planeIndex;
+      leds[5][4] |= 1 << planeIndex;
+      leds[6][4] |= 1 << planeIndex;
+      leds[7][4] |= 1 << planeIndex;
+
+      leds[7][1] |= 1 << planeIndex;
+      leds[7][2] |= 1 << planeIndex;
+      leds[7][3] |= 1 << planeIndex;
+      leds[7][4] |= 1 << planeIndex;
+      leds[7][5] |= 1 << planeIndex;
+      leds[7][6] |= 1 << planeIndex;
+
+      break;
+
   };
 }

@@ -55,6 +55,8 @@ int LedCubeSequences::fillLedList(byte ledArray[8][8], LED ledList[128])
 
 /* Public */
 
+
+
 // =====================================================================================================
 // wave() 
 // Description: Runs a wave in the y-axis for 5 wavelengths.
@@ -78,33 +80,20 @@ void LedCubeSequences::sinWave(byte leds[8][8], int numCycles)
 }
 
 // =====================================================================================================
-// launchFirework() 
-// Description: Randomly chosen LED on the xy plane moves up z-axis and 'explodes' at top
+// initStreamers() 
+// Description: Initializes the velocities of the streams
+// Parameters:
+//  wavelength - in inches (or the distance between LEDs)
 // =====================================================================================================
-void LedCubeSequences::launchFirework(byte leds[8][8])
+void LedCubeSequences::initStreamers(FireworkStreamer streams[24], int x, int y, int z)
 {
-  int x = random(3, 6);
-  int y = random(3, 6);
-  int z = 0;
-  int radius = 1;
-  int height = random(3, 8);
-  // launch
-  for(int i=0; i<height; i++)
-  {
-    z = i;
-    leds[z][y] = 1 << x; 
-    delay(80);
-    leds[z][y] = 0;
-  }
-  // explode
-  int numStreams = 24;
-  FireworkStreamer streams[numStreams];
-  for(int i=0; i<numStreams; i++)
+  for(int i=0; i<24; i++)
   {
     streams[i].x = x;
     streams[i].y = y;
     streams[i].z = z;
   }
+
   streams[0].xvel = 1;
   streams[0].yvel = 1;
   streams[0].zvel = 1;
@@ -212,8 +201,33 @@ void LedCubeSequences::launchFirework(byte leds[8][8])
   streams[23].xvel = -1;
   streams[23].yvel = 0;
   streams[23].zvel = -1;
+}
 
-  for(int t=0; t<5; t++) { // 4 steps
+// =====================================================================================================
+// launchFirework() 
+// Description: Randomly chosen LED on the xy plane moves up z-axis and 'explodes' at top
+// =====================================================================================================
+void LedCubeSequences::launchFirework(byte leds[8][8])
+{
+  int x = random(3, 6);
+  int y = random(3, 6);
+  int z = 0;
+  int radius = 1;
+  int height = random(3, 8);
+  // launch
+  for(int i=0; i<height; i++)
+  {
+    z = i;
+    leds[z][y] = 1 << x; 
+    delay(80);
+    leds[z][y] = 0;
+  }
+  // explode
+  int numStreams = 24;
+  FireworkStreamer streams[numStreams];
+  initStreamers(streams, x, y, z);
+
+  for(int t=0; t<5; t++) { // 5 steps
     for(int i=0; i<numStreams; i++)
     {
       if(inBounds(streams[i].x, streams[i].y, streams[i].z))
@@ -226,6 +240,61 @@ void LedCubeSequences::launchFirework(byte leds[8][8])
       streams[i].zvel = streams[i].zvel - 1;
     }
     delay(90);
+  }
+}
+
+// =====================================================================================================
+// launchFirework() 
+// Description: Randomly choses n LED on the xy plane moves up z-axis and 'explodes' at top
+// Keep n below 5 to avoid using too much memory
+// =====================================================================================================
+void LedCubeSequences::launchNFireworks(byte leds[8][8], int n)
+{
+  int xvec[n];
+  int yvec[n];
+  int zvec[n];
+  int rising[n]; // Is firework still rising?
+  int heightvec[n];
+  byte done = 0;
+  FireworkStreamer streams[n][24];
+
+  for(int f=0; f<n; f++)
+  {
+    xvec[f] = random(3, 6);
+    yvec[f] = random(3, 6);
+    zvec[f] = 0;
+    heightvec[f] = random(3, 8);
+    rising[f] = 1;
+    initStreamers(streams[f], xvec[f], yvec[f], heightvec[f]);
+  }
+
+  int count = 0;
+  while(count<(7+5)) // upperbound with LED going to top of cube
+  {
+    count++;
+    for(int f=0; f<n; f++)
+    {
+      if(rising[f]==1) // fireworks rising
+      {
+        leds[zvec[f]][yvec[f]] |= 1<<xvec[f];
+        zvec[f]++;
+        if(zvec[f]==heightvec[f]) rising[f] = 0;
+      } else // exploding
+      {
+        for(int i=0; i<24; i++)
+        {
+          if(inBounds(streams[f][i].x, streams[f][i].y, streams[f][i].z))
+          {
+            leds[streams[f][i].z][streams[f][i].y] |= 1<<streams[f][i].x;
+          }
+          streams[f][i].x = streams[f][i].x + streams[f][i].xvel;
+          streams[f][i].y = streams[f][i].y + streams[f][i].yvel;
+          streams[f][i].z = streams[f][i].z + streams[f][i].zvel;
+          streams[f][i].zvel = streams[f][i].zvel - 1;
+        }
+      }
+    }
+    delay(500);
   }
 }
 
@@ -286,6 +355,92 @@ void LedCubeSequences::flash(byte leds[8][8], int delayLength, int numFlashes)
     delay(delayLength);
     LedCubeStills::clearAll(leds);
     delay(delayLength);
+  }
+}
+
+// =====================================================================================================
+// rotateCenterZ
+// Description: This function rotates all LEDs one step counter-clockwise around z.
+// =====================================================================================================
+void LedCubeSequences::rotateCenterZ(byte leds[8][8], int numSteps, int delayLength)
+{
+  byte temp[8][8];
+  for(int z=0; z<8; z++) 
+  {
+    for(int y=0; y<8; y++) 
+    {
+      for(int x=0; x<8; x++)
+      {
+        // Outer most Square
+        if(x==0 && y<7)
+        {
+          temp[z][y+1] = 1<<x;
+        }
+        if(y==7 && x<7)
+        {
+          temp[z][y] |= 1<<(x+1);
+        }
+        if(x==7 && y>0)
+        {
+          temp[z][y-1] |= 1<<x;
+        }
+        if(y==0 && x>0) 
+        {
+          temp[z][y] |= 1<<(x-1);
+        }
+        // Next layer
+        if(x==1 && y>=1 && y<6)
+        {
+          temp[z][y+1] = 1<<x;
+        }
+        if(y==6 && x>=1 && x<6)
+        {
+          temp[z][y] |= 1<<(x+1);
+        }
+        if(x==6 && y<=6 && y>1)
+        {
+          temp[z][y-1] |= 1<<x;
+        }
+        if(y==1 && x<=6 && x>1) 
+        {
+          temp[z][y] |= 1<<(x-1);
+        }
+        // Next layer
+        if(x==2 && y>=2 && y<5)
+        {
+          temp[z][y+1] = 1<<x;
+        }
+        if(y==5 && x>=2 && x<5)
+        {
+          temp[z][y] |= 1<<(x+1);
+        }
+        if(x==5 && y<=5 && y>2)
+        {
+          temp[z][y-1] |= 1<<x;
+        }
+        if(y==2 && x<=5 && x>2) 
+        {
+          temp[z][y] |= 1<<(x-1);
+        }
+        // Next layer
+        if(x==3 && y>=3 && y<4)
+        {
+          temp[z][y+1] = 1<<x;
+        }
+        if(y==4 && x>=3 && x<4)
+        {
+          temp[z][y] |= 1<<(x+1);
+        }
+        if(x==4 && y<=4 && y>3)
+        {
+          temp[z][y-1] |= 1<<x;
+        }
+        if(y==3 && x<=4 && x>3) 
+        {
+          temp[z][y] |= 1<<(x-1);
+        }
+      }
+    }
   }
 }
 
