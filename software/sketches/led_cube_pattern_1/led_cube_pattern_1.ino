@@ -45,54 +45,62 @@ void setup()
 
 void loop()
 {
+  
+  LedCubeStills::clearAll(leds);
+  LedCubeSequences::lettersAcrossPlanes(leds, "HELLO", 5);
+
+  LedCubeStills::clearAll(leds);
   for(int i=0; i<3; i++)
   {
-    LedCubeStills::xyPlane(leds, i);
-    LedCubeStills::xyPlane(leds, 7-i);
-    delay(100);
     LedCubeStills::clearAll(leds);
+    LedCubeSequences::launchNFireworks(leds, 2);
   }
   LedCubeStills::clearAll(leds);
-  
-  for(int i=0; i<8; i++)
-  {
-    LedCubeStills::xzPlane(leds, i);
-    LedCubeStills::xzPlane(leds, 7-i);
-    delay(100);
-    LedCubeStills::clearAll(leds);
-  }
-  LedCubeStills::clearAll(leds);
+  LedCubeSequences::crossingxzPlanes(leds);
 
   for(int i=0; i<8; i++)
   {
-    LedCubeStills::yzPlane(leds, i);
-    LedCubeStills::yzPlane(leds, 7-i);
-    delay(100);
     LedCubeStills::clearAll(leds);
-  }
-  LedCubeStills::clearAll(leds);
-  
-  LedCubeSequences::lettersAcrossPlanes(leds, "HELLO", 5);
-  
-  for(int i=0; i<5; i++)
-  {
-    LedCubeSequences::launchFirework(leds);
+    LedCubeStills::xyPlane(leds, i%8);
+    LedCubeStills::xzPlane(leds, i%8);
     delay(100);
-    LedCubeStills::clearAll(leds); 
+  }
+
+  for(int i=0; i<8; i++)
+  {
+    LedCubeStills::clearAll(leds);
+    LedCubeStills::xzPlane(leds, i%8);
+    LedCubeStills::yzPlane(leds, i%8);
+    delay(100);
   }
   
+  for(int i=0; i<8; i++)
+  {
+    LedCubeStills::clearAll(leds);
+    LedCubeStills::yzPlane(leds, i%8);
+    LedCubeStills::xyPlane(leds, (7-i)%8);
+    delay(100);
+  }
+
+  LedCubeStills::clearAll(leds);
+  LedCubeSequences::xy0Toxz0(leds);
+  
+  for(int i=0; i<28; i++)
+  {
+    delay(100);
+    LedCubeSequences::rotateCenterZ(leds);
+  }
+
+  LedCubeStills::clearAll(leds);
   LedCubeSequences::sinWave(leds, 10);
-  LedCubeStills::clearAll(leds);
 
+  LedCubeStills::clearAll(leds);
   LedCubeSequences::randomUntilAllOn(leds, 10);
-  LedCubeStills::clearAll(leds);
 
-  LedCubeSequences::flash(leds, 500, 5);
   LedCubeStills::clearAll(leds);
+  LedCubeSequences::flash(leds, 500, 5);
   
   LedCubeSequences::randomBursts(leds, 350, 10);
-  LedCubeStills::clearAll(leds);
-  
 }
 
 ISR(TIMER2_COMPA_vect) 
