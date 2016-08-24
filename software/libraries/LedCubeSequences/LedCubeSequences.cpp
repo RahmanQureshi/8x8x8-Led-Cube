@@ -260,8 +260,8 @@ void LedCubeSequences::launchNFireworks(byte leds[8][8], int n)
 
   for(int f=0; f<n; f++)
   {
-    xvec[f] = random(3, 6);
-    yvec[f] = random(3, 6);
+    xvec[f] = random(1, 7);
+    yvec[f] = random(1, 7);
     zvec[f] = 0;
     heightvec[f] = random(3, 8);
     rising[f] = 1;
@@ -294,7 +294,7 @@ void LedCubeSequences::launchNFireworks(byte leds[8][8], int n)
         }
       }
     }
-    delay(500);
+    delay(100);
   }
 }
 
@@ -362,84 +362,102 @@ void LedCubeSequences::flash(byte leds[8][8], int delayLength, int numFlashes)
 // rotateCenterZ
 // Description: This function rotates all LEDs one step counter-clockwise around z.
 // =====================================================================================================
-void LedCubeSequences::rotateCenterZ(byte leds[8][8], int numSteps, int delayLength)
+void LedCubeSequences::rotateCenterZ(byte leds[8][8])
 {
   byte temp[8][8];
+  for(int i=0; i<8; i++)
+  {
+    for(int j=0; j<8; j++)
+    {
+      temp[i][j] = 0;
+    }
+  }
+
   for(int z=0; z<8; z++) 
   {
     for(int y=0; y<8; y++) 
     {
       for(int x=0; x<8; x++)
       {
-        // Outer most Square
-        if(x==0 && y<7)
+        if(ledOn(leds, x, y, z))
         {
-          temp[z][y+1] = 1<<x;
-        }
-        if(y==7 && x<7)
-        {
-          temp[z][y] |= 1<<(x+1);
-        }
-        if(x==7 && y>0)
-        {
-          temp[z][y-1] |= 1<<x;
-        }
-        if(y==0 && x>0) 
-        {
-          temp[z][y] |= 1<<(x-1);
-        }
-        // Next layer
-        if(x==1 && y>=1 && y<6)
-        {
-          temp[z][y+1] = 1<<x;
-        }
-        if(y==6 && x>=1 && x<6)
-        {
-          temp[z][y] |= 1<<(x+1);
-        }
-        if(x==6 && y<=6 && y>1)
-        {
-          temp[z][y-1] |= 1<<x;
-        }
-        if(y==1 && x<=6 && x>1) 
-        {
-          temp[z][y] |= 1<<(x-1);
-        }
-        // Next layer
-        if(x==2 && y>=2 && y<5)
-        {
-          temp[z][y+1] = 1<<x;
-        }
-        if(y==5 && x>=2 && x<5)
-        {
-          temp[z][y] |= 1<<(x+1);
-        }
-        if(x==5 && y<=5 && y>2)
-        {
-          temp[z][y-1] |= 1<<x;
-        }
-        if(y==2 && x<=5 && x>2) 
-        {
-          temp[z][y] |= 1<<(x-1);
-        }
-        // Next layer
-        if(x==3 && y>=3 && y<4)
-        {
-          temp[z][y+1] = 1<<x;
-        }
-        if(y==4 && x>=3 && x<4)
-        {
-          temp[z][y] |= 1<<(x+1);
-        }
-        if(x==4 && y<=4 && y>3)
-        {
-          temp[z][y-1] |= 1<<x;
-        }
-        if(y==3 && x<=4 && x>3) 
-        {
-          temp[z][y] |= 1<<(x-1);
+          // Outer most Square
+          if(x==0 && y<7)
+          {
+            temp[z][y+1] |= 1<<x;
+          }
+          if(y==7 && x<7)
+          {
+            temp[z][y] |= 1<<(x+1);
+          }
+          if(x==7 && y>0)
+          {
+            temp[z][y-1] |= 1<<x;
+          }
+          if(y==0 && x>0) 
+          {
+            temp[z][y] |= 1<<(x-1);
+          }
+          // Next layer
+          if(x==1 && y>=1 && y<6)
+          {
+            temp[z][y+1] |= 1<<x;
+          }
+          if(y==6 && x>=1 && x<6)
+          {
+            temp[z][y] |= 1<<(x+1);
+          }
+          if(x==6 && y<=6 && y>1)
+          {
+            temp[z][y-1] |= 1<<x;
+          }
+          if(y==1 && x<=6 && x>1) 
+          {
+            temp[z][y] |= 1<<(x-1);
+          }
+          // Next layer
+          if(x==2 && y>=2 && y<5)
+          {
+            temp[z][y+1] |= 1<<x;
+          }
+          if(y==5 && x>=2 && x<5)
+          {
+            temp[z][y] |= 1<<(x+1);
+          }
+          if(x==5 && y<=5 && y>2)
+          {
+            temp[z][y-1] |= 1<<x;
+          }
+          if(y==2 && x<=5 && x>2) 
+          {
+            temp[z][y] |= 1<<(x-1);
+          }
+          // Next layer
+          if(x==3 && y>=3 && y<4)
+          {
+            temp[z][y+1] |= 1<<x;
+          }
+          if(y==4 && x>=3 && x<4)
+          {
+            temp[z][y] |= 1<<(x+1);
+          }
+          if(x==4 && y<=4 && y>3)
+          {
+            temp[z][y-1] |= 1<<x;
+          }
+          if(y==3 && x<=4 && x>3) 
+          {
+            temp[z][y] |= 1<<(x-1);
+          }
         }
       }
+    }
+  }
+  for(int i=0; i<8; i++)
+  {
+    for(int j=0; j<8; j++)
+    {
+      leds[i][j] = temp[i][j];
     }
   }
 }

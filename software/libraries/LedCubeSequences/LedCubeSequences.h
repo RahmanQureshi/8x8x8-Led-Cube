@@ -30,7 +30,7 @@ class LedCubeSequences {
 		static void lettersAcrossPlanes(byte leds[8][8], char* letters, int length);
 		static void flash(byte leds[8][8], int delayLength, int numFlashes);
 		static void rotateCenterZ(byte leds[8][8], float radStep, int numSteps, int delayLength);
-		static void rotateCenterZ(byte leds[8][8], int numSteps, int delayLength);
+		static void rotateCenterZ(byte leds[8][8]);
 		static void xy0Toxz0(byte leds[8][8]);
 		static void crossingxzPlanes(byte led[8][8]);
 	private:
