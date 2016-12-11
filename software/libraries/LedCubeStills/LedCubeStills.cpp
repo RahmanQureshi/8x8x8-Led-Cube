@@ -1,5 +1,17 @@
 #include "LedCubeStills.h"
 
+/*
+void LedCubeStills::on(byte leds[8][8], int x, int y, int z)
+{
+  leds[z][y] |= 1<<x;
+}
+
+void LedCubeStills::off(byte leds[8][8], int x, int y, int z)
+{
+  leds[z][y] &= ~(1<<x);
+}
+*/
+
 // =====================================================================================================
 // horizontalPlane() 
 // Description: Turns on the ith xy plane.

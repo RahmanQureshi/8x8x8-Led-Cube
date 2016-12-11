@@ -5,7 +5,7 @@
 
 #define LEDCUBESEQUENCES
 
-struct FireworkStreamer {
+struct MobileLED {
 	signed int xvel;
 	signed int yvel;
 	signed int zvel;
@@ -32,13 +32,15 @@ class LedCubeSequences {
 		static void rotateCenterZ(byte leds[8][8], float radStep, int numSteps, int delayLength);
 		static void rotateCenterZ(byte leds[8][8]);
 		static void xy0Toxz0(byte leds[8][8]);
-		static void crossingxzPlanes(byte led[8][8]);
+		static void crossingxzPlanes(byte leds[8][8]);
+		static void rain(byte leds[8][8]);
+		static void shiftAcrossFreeze(byte leds[8][8], int xvel, int yvel, int zvel);
 	private:
 		static bool inBounds(int x, int y, int z);
 		static bool ledOn(byte leds[8][8], int x, int y, int z);
 		static int fillLedList(byte ledArray[8][8], LED ledList[128]);
 		static int getNumLedsOn(byte leds[8][8]);
-		static void initStreamers(FireworkStreamer streams[24], int x, int y, int z);
+		static void initStreamers(MobileLED streams[24], int x, int y, int z);
 };
 
 #endif

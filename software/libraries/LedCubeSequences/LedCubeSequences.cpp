@@ -55,7 +55,84 @@ int LedCubeSequences::fillLedList(byte ledArray[8][8], LED ledList[128])
 
 /* Public */
 
+// =====================================================================================================
+// shiftAcrossFreeze
+// Description: Maximum of 64 LEDs should be on. Shifts LEDs by their velocity 8 times and gives 1/8 chance that the LED's
+// velocities will be set to 0. Note that this is meant to be used with a boundary plane and only one of the velocities 1
+// and the rest 0.
+// =====================================================================================================
+void LedCubeSequences::shiftAcrossFreeze(byte leds[8][8], int xvel, int yvel, int zvel)
+{
+  int numLedsOn = getNumLedsOn(leds);
+  MobileLED LEDs[numLedsOn];
+  int i = 0;
+  for(int z=0; z<8; z++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        if(ledOn(leds, x, y, z))
+        {
+          LEDs[i].x = x;
+          LEDs[i].y = y;
+          LEDs[i].z = z;
+          LEDs[i].xvel = xvel;
+          LEDs[i].yvel = yvel;
+          LEDs[i].zvel = zvel;
+          i = i+1;
+        }
+      }
+    }
+  }
+  // shift the LEDs according to their velocities 8 times. 1/8 chance that LED's velocities will be set to 0.
+  for (int j=0; j<8; j++) 
+  {
+    for(i=0; i<numLedsOn; i++)
+    {
+      LedCubeStills::off(leds, LEDs[i].x, LEDs[i].y, LEDs[i].z);
+      if(random(0,8) == 0 || !(inBounds(LEDs[i].x + xvel, LEDs[i].y + yvel, LEDs[i].z + zvel))) 
+      {
+        LEDs[i].xvel = 0;
+        LEDs[i].yvel = 0;
+        LEDs[i].zvel = 0;
+      }
+      LEDs[i].x = LEDs[i].x + xvel;
+      LEDs[i].y = LEDs[i].y + yvel;
+      LEDs[i].z = LEDs[i].z + zvel; 
+      LedCubeStills::on(leds, LEDs[i].x, LEDs[i].y, LEDs[i].z);
+    }
+    delay(500);
+  }
+}
 
+// =====================================================================================================
+// rain()
+// Description: Randomly tuns on LEDs and moves them downward
+// =====================================================================================================
+void LedCubeSequences::rain(byte leds[8][8])
+{
+  LedCubeStills::randomLeds(leds, 300);
+  for(int i=0; i<100; i++)
+  {
+    for(int z=0; z<8; z++)
+    {
+      for(int y=0; y<8; y++)
+      {
+        for(int x=0; x<8; x++)
+        {
+          if (leds[z][y] & 1<<x)
+          {
+            leds[z][y] &= ~(1<<x);
+            if (z==0) leds[7][y] |= 1<<x;
+            else leds[z-1][y] |= 1<<x;
+          }
+        }
+      }
+    }
+    delay(300);
+  }
+}
 
 // =====================================================================================================
 // wave() 
@@ -85,7 +162,7 @@ void LedCubeSequences::sinWave(byte leds[8][8], int numCycles)
 // Parameters:
 //  wavelength - in inches (or the distance between LEDs)
 // =====================================================================================================
-void LedCubeSequences::initStreamers(FireworkStreamer streams[24], int x, int y, int z)
+void LedCubeSequences::initStreamers(MobileLED streams[24], int x, int y, int z)
 {
   for(int i=0; i<24; i++)
   {
@@ -224,7 +301,7 @@ void LedCubeSequences::launchFirework(byte leds[8][8])
   }
   // explode
   int numStreams = 24;
-  FireworkStreamer streams[numStreams];
+  MobileLED streams[numStreams];
   initStreamers(streams, x, y, z);
 
   for(int t=0; t<5; t++) { // 5 steps
@@ -256,7 +333,7 @@ void LedCubeSequences::launchNFireworks(byte leds[8][8], int n)
   int rising[n]; // Is firework still rising?
   int heightvec[n];
   byte done = 0;
-  FireworkStreamer streams[n][24];
+  MobileLED streams[n][24];
 
   for(int f=0; f<n; f++)
   {
