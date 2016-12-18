@@ -1,6 +1,5 @@
 #include "LedCubeStills.h"
 
-/*
 void LedCubeStills::on(byte leds[8][8], int x, int y, int z)
 {
   leds[z][y] |= 1<<x;
@@ -10,7 +9,6 @@ void LedCubeStills::off(byte leds[8][8], int x, int y, int z)
 {
   leds[z][y] &= ~(1<<x);
 }
-*/
 
 // =====================================================================================================
 // horizontalPlane() 
@@ -479,6 +477,32 @@ void LedCubeStills::letter(byte leds[8][8], char letter, int planeIndex)
 
       break;
 
+    case 'P':
+      leds[0][2] |= 1 << planeIndex;
+      leds[1][2] |= 1 << planeIndex;
+      leds[2][2] |= 1 << planeIndex;
+      leds[3][2] |= 1 << planeIndex;
+      leds[4][2] |= 1 << planeIndex;
+      leds[5][2] |= 1 << planeIndex;
+      leds[6][2] |= 1 << planeIndex;
+      leds[7][2] |= 1 << planeIndex;
+
+      leds[7][2] |= 1 << planeIndex;
+      leds[7][3] |= 1 << planeIndex;
+      leds[7][4] |= 1 << planeIndex;
+      leds[7][5] |= 1 << planeIndex;      
+
+      leds[6][5] |= 1 << planeIndex;
+      leds[5][5] |= 1 << planeIndex;
+      leds[4][5] |= 1 << planeIndex;
+
+      leds[3][2] |= 1 << planeIndex;
+      leds[3][3] |= 1 << planeIndex;
+      leds[3][4] |= 1 << planeIndex;
+      leds[3][5] |= 1 << planeIndex;
+ 
+      break;
+
     case 'R':
       leds[0][2] |= 1 << planeIndex;
       leds[1][2] |= 1 << planeIndex;
@@ -530,6 +554,144 @@ void LedCubeStills::letter(byte leds[8][8], char letter, int planeIndex)
       leds[7][4] |= 1 << planeIndex;
 
       leds[7][1] |= 1 << planeIndex;
+      leds[7][2] |= 1 << planeIndex;
+      leds[7][3] |= 1 << planeIndex;
+      leds[7][4] |= 1 << planeIndex;
+      leds[7][5] |= 1 << planeIndex;
+      leds[7][6] |= 1 << planeIndex;
+
+      break;
+
+    case 'Y':
+      leds[0][3] |= 1 << planeIndex;
+      leds[0][4] |= 1 << planeIndex;
+      leds[1][3] |= 1 << planeIndex;
+      leds[1][4] |= 1 << planeIndex;
+      leds[2][3] |= 1 << planeIndex;
+      leds[2][4] |= 1 << planeIndex;
+      leds[3][3] |= 1 << planeIndex;
+      leds[3][4] |= 1 << planeIndex;
+
+      leds[7][0] |= 1 << planeIndex;
+      leds[6][1] |= 1 << planeIndex;
+      leds[5][2] |= 1 << planeIndex;
+      leds[4][3] |= 1 << planeIndex;
+
+      leds[7][7] |= 1 << planeIndex;
+      leds[6][6] |= 1 << planeIndex;
+      leds[5][5] |= 1 << planeIndex;
+      leds[4][4] |= 1 << planeIndex;
+
+      break;
+    
+    case '0': // same as 'O'
+      leds[0][1] |= 1 << planeIndex;
+      leds[1][1] |= 1 << planeIndex;
+      leds[2][1] |= 1 << planeIndex;
+      leds[3][1] |= 1 << planeIndex;
+      leds[4][1] |= 1 << planeIndex;
+      leds[5][1] |= 1 << planeIndex;
+      leds[6][1] |= 1 << planeIndex;
+      leds[7][1] |= 1 << planeIndex;
+
+      leds[0][6] |= 1 << planeIndex;
+      leds[1][6] |= 1 << planeIndex;
+      leds[2][6] |= 1 << planeIndex;
+      leds[3][6] |= 1 << planeIndex;
+      leds[4][6] |= 1 << planeIndex;
+      leds[5][6] |= 1 << planeIndex;
+      leds[6][6] |= 1 << planeIndex;
+      leds[7][6] |= 1 << planeIndex;
+
+      leds[7][2] |= 1 << planeIndex;
+      leds[7][3] |= 1 << planeIndex;
+      leds[7][4] |= 1 << planeIndex;
+      leds[7][5] |= 1 << planeIndex;
+      leds[7][6] |= 1 << planeIndex;
+
+      leds[0][2] |= 1 << planeIndex;
+      leds[0][3] |= 1 << planeIndex;
+      leds[0][4] |= 1 << planeIndex;
+      leds[0][5] |= 1 << planeIndex;
+      leds[0][6] |= 1 << planeIndex;      
+      break;
+
+    case '1':
+      leds[0][3] |= 1 << planeIndex;
+      leds[1][3] |= 1 << planeIndex;
+      leds[2][3] |= 1 << planeIndex;
+      leds[3][3] |= 1 << planeIndex;
+      leds[4][3] |= 1 << planeIndex;
+      leds[5][3] |= 1 << planeIndex;
+      leds[6][3] |= 1 << planeIndex;
+      leds[7][3] |= 1 << planeIndex;
+
+      leds[0][4] |= 1 << planeIndex;
+      leds[1][4] |= 1 << planeIndex;
+      leds[2][4] |= 1 << planeIndex;
+      leds[3][4] |= 1 << planeIndex;
+      leds[4][4] |= 1 << planeIndex;
+      leds[5][4] |= 1 << planeIndex;
+      leds[6][4] |= 1 << planeIndex;
+      leds[7][4] |= 1 << planeIndex; 
+      break;
+
+    case '2':
+      leds[0][6] |= 1 << planeIndex;
+      leds[0][5] |= 1 << planeIndex;
+      leds[0][4] |= 1 << planeIndex;
+      leds[0][3] |= 1 << planeIndex;
+      leds[0][2] |= 1 << planeIndex;
+      leds[0][1] |= 1 << planeIndex;
+  
+      leds[1][1] |= 1 << planeIndex;
+      leds[2][1] |= 1 << planeIndex;
+      leds[3][1] |= 1 << planeIndex;
+      leds[4][1] |= 1 << planeIndex;
+
+      leds[4][2] |= 1 << planeIndex;
+      leds[4][3] |= 1 << planeIndex;
+      leds[4][4] |= 1 << planeIndex;
+      leds[4][5] |= 1 << planeIndex;
+      leds[4][6] |= 1 << planeIndex;
+
+      leds[5][6] |= 1 << planeIndex;
+      leds[6][6] |= 1 << planeIndex;
+      leds[7][6] |= 1 << planeIndex;
+
+      leds[7][5] |= 1 << planeIndex;
+      leds[7][4] |= 1 << planeIndex;
+      leds[7][3] |= 1 << planeIndex;
+      leds[7][2] |= 1 << planeIndex;
+      leds[7][1] |= 1 << planeIndex;
+      break;
+
+    case '6':
+      leds[0][6] |= 1 << planeIndex;
+      leds[0][5] |= 1 << planeIndex;
+      leds[0][4] |= 1 << planeIndex;
+      leds[0][3] |= 1 << planeIndex;
+      leds[0][2] |= 1 << planeIndex;
+      leds[0][1] |= 1 << planeIndex;
+      
+      leds[1][1] |= 1 << planeIndex;
+      leds[2][1] |= 1 << planeIndex;
+      leds[3][1] |= 1 << planeIndex;
+      leds[4][1] |= 1 << planeIndex;
+      leds[5][1] |= 1 << planeIndex;
+      leds[6][1] |= 1 << planeIndex;
+      leds[7][1] |= 1 << planeIndex;
+
+      leds[1][6] |= 1 << planeIndex;
+      leds[2][6] |= 1 << planeIndex;
+      leds[3][6] |= 1 << planeIndex;
+      leds[4][6] |= 1 << planeIndex;
+
+      leds[4][2] |= 1 << planeIndex;
+      leds[4][3] |= 1 << planeIndex;
+      leds[4][4] |= 1 << planeIndex;
+      leds[4][5] |= 1 << planeIndex;
+
       leds[7][2] |= 1 << planeIndex;
       leds[7][3] |= 1 << planeIndex;
       leds[7][4] |= 1 << planeIndex;

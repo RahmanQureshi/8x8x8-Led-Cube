@@ -2,7 +2,7 @@
 
 /* Private */
 
-bool LedCubeSequences::ledOn(byte leds[8][8], int x, int y, int z)
+bool LedCubeSequences::isLedOn(byte leds[8][8], int x, int y, int z)
 {
   return ( leds[z][y] & (1<<x) ) > 0;
 }
@@ -16,7 +16,7 @@ int LedCubeSequences::getNumLedsOn(byte leds[8][8])
     {
       for(int x=0; x<8; x++)
       {
-        if(ledOn(leds, x, y, z)) numLedsOn++;
+        if(isLedOn(leds, x, y, z)) numLedsOn++;
       }
     }
   }
@@ -37,9 +37,8 @@ int LedCubeSequences::fillLedList(byte ledArray[8][8], LED ledList[128])
   {
     for(int y=0; y<8; y++)
     {
-      for(int x=0; x<8; x++)
-      {
-        if(ledOn(ledArray, x, y, z))
+      for(int x=0; x<8; x++) {
+        if(isLedOn(ledArray, x, y, z))
         {
           ledList[i].x = x;
           ledList[i].y = y;
@@ -58,10 +57,10 @@ int LedCubeSequences::fillLedList(byte ledArray[8][8], LED ledList[128])
 // =====================================================================================================
 // shiftAcrossFreeze
 // Description: Maximum of 64 LEDs should be on. Shifts LEDs by their velocity 8 times and gives 1/8 chance that the LED's
-// velocities will be set to 0. Note that this is meant to be used with a boundary plane and only one of the velocities 1
-// and the rest 0.
+// velocities will be set to 0. Once all LEDs are stopped, will resume and all LEDs will continue to edge. 
+// Note that this is meant to be used with a boundary plane and only one of the velocities 1 and the rest 0.
 // =====================================================================================================
-void LedCubeSequences::shiftAcrossFreeze(byte leds[8][8], int xvel, int yvel, int zvel)
+void LedCubeSequences::shiftAcrossFreezeContinue(byte leds[8][8], int xvel, int yvel, int zvel)
 {
   int numLedsOn = getNumLedsOn(leds);
   MobileLED LEDs[numLedsOn];
@@ -72,7 +71,7 @@ void LedCubeSequences::shiftAcrossFreeze(byte leds[8][8], int xvel, int yvel, in
     {
       for(int x=0; x<8; x++)
       {
-        if(ledOn(leds, x, y, z))
+        if(isLedOn(leds, x, y, z))
         {
           LEDs[i].x = x;
           LEDs[i].y = y;
@@ -101,6 +100,23 @@ void LedCubeSequences::shiftAcrossFreeze(byte leds[8][8], int xvel, int yvel, in
       LEDs[i].y = LEDs[i].y + yvel;
       LEDs[i].z = LEDs[i].z + zvel; 
       LedCubeStills::on(leds, LEDs[i].x, LEDs[i].y, LEDs[i].z);
+    }
+    delay(500);
+  }
+  delay(2000); // Pause for 2 seconds
+  // shift LEDs all the way over. Maximum moves required is 8.
+  for (int j=0; j<8; j++) 
+  {
+    for(i=0; i<numLedsOn; i++)
+    {
+      if (inBounds(LEDs[i].x + xvel, LEDs[i].y + yvel, LEDs[i].z + zvel))
+      {
+        LedCubeStills::off(leds, LEDs[i].x, LEDs[i].y, LEDs[i].z);
+        LEDs[i].x = LEDs[i].x + xvel;
+        LEDs[i].y = LEDs[i].y + yvel;
+        LEDs[i].z = LEDs[i].z + zvel;
+        LedCubeStills::on(leds, LEDs[i].x, LEDs[i].y, LEDs[i].z);
+      }
     }
     delay(500);
   }
@@ -456,7 +472,7 @@ void LedCubeSequences::rotateCenterZ(byte leds[8][8])
     {
       for(int x=0; x<8; x++)
       {
-        if(ledOn(leds, x, y, z))
+        if(isLedOn(leds, x, y, z))
         {
           // Outer most Square
           if(x==0 && y<7)

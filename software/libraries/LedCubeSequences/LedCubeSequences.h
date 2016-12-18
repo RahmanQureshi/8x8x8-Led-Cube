@@ -34,10 +34,10 @@ class LedCubeSequences {
 		static void xy0Toxz0(byte leds[8][8]);
 		static void crossingxzPlanes(byte leds[8][8]);
 		static void rain(byte leds[8][8]);
-		static void shiftAcrossFreeze(byte leds[8][8], int xvel, int yvel, int zvel);
+		static void shiftAcrossFreezeContinue(byte leds[8][8], int xvel, int yvel, int zvel);
 	private:
 		static bool inBounds(int x, int y, int z);
-		static bool ledOn(byte leds[8][8], int x, int y, int z);
+		static bool isLedOn(byte leds[8][8], int x, int y, int z);
 		static int fillLedList(byte ledArray[8][8], LED ledList[128]);
 		static int getNumLedsOn(byte leds[8][8]);
 		static void initStreamers(MobileLED streams[24], int x, int y, int z);
