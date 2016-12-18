@@ -15,8 +15,8 @@ class LedCubeStills {
 		static void clearAll(byte leds[8][8]);
 		static void letter(byte leds[8][8], char letter, int planeIndex);
 		static void tanslateDown(byte leds[8][8]);
-		//static void on(byte leds[8][8], int x, int y, int z);
-		//static void off(byte leds[8][8], int x, int y, int z);
+		static void on(byte leds[8][8], int x, int y, int z);
+		static void off(byte leds[8][8], int x, int y, int z);
 };
 
 #endif
