@@ -116,18 +116,43 @@ void LedCubeStills::wireFrame(byte leds[8][8])
   }
 }
 
+
 // =====================================================================================================
 // random() 
 // Description: Turns on 'n' random LEDs
 // =====================================================================================================
 void LedCubeStills::randomLeds(byte leds[8][8], int n)
 {
-  for(int i = 0; i<n; i++)
+  byte randomizedLeds[512][3]; // Why the fuck is too much memory used if I do StaticlED[512]??? Each StaticLED is also 3 bytes ffs.
+  // init and shuffle
+  for(int x=0; x<8; x++)
   {
-    int x = random(0, 8);
-    int y = random(0, 8);
-    int z = random(0, 8);
-    leds[z][y] |= 1 << x;
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        randomizedLeds[64*x+8*y+z][0] = x;
+        randomizedLeds[64*x+8*y+z][1] = y;
+        randomizedLeds[64*x+8*y+z][2] = z; 
+      }
+    }
+  }
+  for(int i=0; i<512; i++)
+  {
+    int randomIndex = random(0, 512);
+    byte xTemp = randomizedLeds[i][0];
+    byte yTemp = randomizedLeds[i][1];
+    byte zTemp = randomizedLeds[i][2];
+    randomizedLeds[i][0] = randomizedLeds[randomIndex][0];
+    randomizedLeds[i][1] = randomizedLeds[randomIndex][1];
+    randomizedLeds[i][2] = randomizedLeds[randomIndex][2];
+    randomizedLeds[randomIndex][0] = xTemp;
+    randomizedLeds[randomIndex][1] = yTemp;
+    randomizedLeds[randomIndex][2] = zTemp;
+  }
+  for(int i=0; i<n; i++)
+  {
+    LedCubeStills::on(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
   }
 }
 

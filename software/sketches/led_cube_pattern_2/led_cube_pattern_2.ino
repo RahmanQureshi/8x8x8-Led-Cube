@@ -42,11 +42,20 @@ void setup()
   // Cube Initialization End
   
   LedCubeSequences::lettersAcrossPlanes(leds, "PEY2016", 7);
-  delay(500);
+  delay(500);  
 }
 
 void loop()
 {
+  LedCubeSequences::randomBursts(leds, 50, 10);
+  LedCubeSequences::randomBursts(leds, 100, 10);
+  LedCubeSequences::randomBursts(leds, 150, 10);
+  LedCubeSequences::randomBursts(leds, 200, 10);
+  LedCubeSequences::randomUntilAllOn(leds, 30);
+  delay(1000); 
+  LedCubeSequences::flash(leds, 400, 5);
+  delay(2000);
+ 
   LedCubeStills::clearAll(leds);
   LedCubeSequences::rain(leds);
   

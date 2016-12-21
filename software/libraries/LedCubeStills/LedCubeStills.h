@@ -4,6 +4,12 @@
 
 #define LEDCUBESTILLS
 
+struct StaticLED {
+  byte x;
+  byte y;
+  byte z;
+};
+
 class LedCubeStills {
 	public:
 		static void xyPlane(byte leds[8][8], int planeIndex);
