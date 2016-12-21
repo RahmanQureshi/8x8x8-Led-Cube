@@ -27,7 +27,7 @@ bool LedCubeSequences::inBounds(int x, int y, int z)
 {
   return (x >= 0 && x <= 7 
     && y >= 0 && y <= 7
-    && z >= 0 && z <= 8);
+    && z >= 0 && z <= 7);
 }
 
 int LedCubeSequences::fillLedList(byte ledArray[8][8], LED ledList[128])
@@ -139,57 +139,29 @@ void LedCubeSequences::miniCubeDance(byte leds[8][8])
   LedCubeStills::on(leds, 4, 0, 2);
   LedCubeStills::on(leds, 4, 0, 3);
 
-  delay(500);
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, 1); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 1, 0); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 0, 0); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(50); }
+  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, 1); delay(50); }
+  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, 0, 0); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 0, 1); delay(85); }
+  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, -1, 0); delay(85); }
+  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 1, 0); delay(85); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, -1, 0); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, 0, 0); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 1, 1); delay(85); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, -1, 0); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, 1, -1); delay(85); }
+  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, 1); delay(85); }
+  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(85); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, -1, 0); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 1, 0); delay(85); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, -1, 1); delay(85); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(50); }
 
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, 1); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 1, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 0, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, 0, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 0, 1); delay(85); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, -1, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, 0, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 1, 1); delay(85); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, -1, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, 1, -1); delay(85); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, -1, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 1, 0); delay(85); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, -1, 1); delay(85); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(50); }
-
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, 1); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 1, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 0, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, 0, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 0, 1); delay(85); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, -1, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, 0, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 1, 1); delay(85); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, -1, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, 1, -1); delay(85); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, -1, 0); delay(50); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 1, 0); delay(85); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, -1, -1, 1); delay(85); }
-  for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 0, -1); delay(50); }
 }
  
 // =====================================================================================================
@@ -239,7 +211,7 @@ void LedCubeSequences::shiftAcrossFreezeContinue(byte leds[8][8], int xvel, int 
       LEDs[i].z = LEDs[i].z + LEDs[i].zvel; 
       LedCubeStills::on(leds, LEDs[i].x, LEDs[i].y, LEDs[i].z);
     }
-    delay(50);
+    delay(25);
   }
   delay(500); // Pause for 2 seconds
   // shift LEDs all the way over. Maximum moves required is 8.
@@ -256,7 +228,7 @@ void LedCubeSequences::shiftAcrossFreezeContinue(byte leds[8][8], int xvel, int 
         LedCubeStills::on(leds, LEDs[i].x, LEDs[i].y, LEDs[i].z);
       }
     }
-    delay(50);
+    delay(25);
   }
 }
 
@@ -266,25 +238,27 @@ void LedCubeSequences::shiftAcrossFreezeContinue(byte leds[8][8], int xvel, int 
 // =====================================================================================================
 void LedCubeSequences::rain(byte leds[8][8])
 {
-  LedCubeStills::randomLeds(leds, 300);
+  // randomly turn on one LED per column
+  for(int x=0; x<8; x++) {
+    for (int y=0; y<8; y++) {
+      leds[random(0, 8)][y] |= 1 << x;
+    }
+  }
+
+  int numLedsOn = getNumLedsOn(leds);
+  LED ledList[numLedsOn];
+  fillLedList(leds, ledList);
+  
   for(int i=0; i<100; i++)
   {
-    for(int z=0; z<8; z++)
+    for(int j=0; j<numLedsOn; j++)
     {
-      for(int y=0; y<8; y++)
-      {
-        for(int x=0; x<8; x++)
-        {
-          if (leds[z][y] & 1<<x)
-          {
-            leds[z][y] &= ~(1<<x);
-            if (z==0) leds[7][y] |= 1<<x;
-            else leds[z-1][y] |= 1<<x;
-          }
-        }
-      }
+      LedCubeStills::off(leds, ledList[j].x, ledList[j].y, ledList[j].z);
+      if(ledList[j].z == 0) ledList[j].z = 7;
+      else ledList[j].z = ledList[j].z-1;
+      LedCubeStills::on(leds, ledList[j].x, ledList[j].y, ledList[j].z);
     }
-    delay(300);
+    delay(75);
   }
 }
 
@@ -772,6 +746,6 @@ void LedCubeSequences::xy0Toxz0(byte leds[8][8])
         leds[0][y] = 0b00000000;
       }
     }
-    delay(100);
+    delay(25);
   }
 }
