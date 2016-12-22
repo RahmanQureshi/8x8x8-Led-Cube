@@ -55,6 +55,38 @@ int LedCubeSequences::fillLedList(byte ledArray[8][8], LED ledList[128])
 /* Public */
 
 // =====================================================================================================
+// rotatingsyMBOL
+// =====================================================================================================
+void LedCubeSequences::rotatingSymbol(byte leds[8][8])
+{
+  LedCubeStills::clearAll(leds);
+  LedCubeStills::on(leds, 3, 3, 0);
+  LedCubeStills::on(leds, 3, 3, 1);
+  LedCubeStills::on(leds, 3, 3, 2);
+  LedCubeStills::on(leds, 2, 2, 0);
+  LedCubeStills::on(leds, 1, 1, 0);
+  LedCubeStills::on(leds, 1, 1, 1);
+  LedCubeStills::on(leds, 0, 0, 1);
+  LedCubeStills::on(leds, 0, 0, 2);
+  LedCubeStills::on(leds, 0, 0, 7);
+  LedCubeStills::on(leds, 0, 0, 6);
+
+  LedCubeStills::on(leds, 4, 4, 0);
+  LedCubeStills::on(leds, 4, 4, 1);
+  LedCubeStills::on(leds, 4, 4, 2);
+  LedCubeStills::on(leds, 5, 5, 0);
+  LedCubeStills::on(leds, 6, 6, 0);
+  LedCubeStills::on(leds, 6, 6, 1);
+  LedCubeStills::on(leds, 7, 7, 1);
+  LedCubeStills::on(leds, 7, 7, 2);
+  LedCubeStills::on(leds, 7, 7, 7);
+  LedCubeStills::on(leds, 7, 7, 6);
+
+  LedCubeSequences::rotateCenterZ(leds, 0.2, 90, 100); // About 3 circles. 0.2*90 = 6*2pi
+  
+}
+
+// =====================================================================================================
 // moveLeds
 // Description: moves all active LEDs in the cube by x, y and z 
 // =====================================================================================================
@@ -320,7 +352,19 @@ void LedCubeSequences::rain(byte leds[8][8])
 }
 
 // =====================================================================================================
-// wave() 
+// planarSinWave() 
+// Description: Runs a wave in the y-axis for 5 wavelengths.
+// Parameters:
+//  wavelength - in inches (or the distance between LEDs)
+// =====================================================================================================
+void LedCubeSequences::planarSinWave(byte leds[8][8])
+{
+  
+  
+}
+
+// =====================================================================================================
+// sinWave() 
 // Description: Runs a wave in the y-axis for 5 wavelengths.
 // Parameters:
 //  wavelength - in inches (or the distance between LEDs)
@@ -564,7 +608,7 @@ void LedCubeSequences::launchNFireworks(byte leds[8][8], int n)
 // randomUntilAllOn() 
 // Description: Turns on numLedsPerRound each cycle until all LEDs are on
 // =====================================================================================================
-void LedCubeSequences::randomUntilAllOn(byte leds[8][8], int numLedsPerRound)
+void LedCubeSequences::randomUntilAllOn(byte leds[8][8])
 {
   byte randomizedLeds[512][3]; // Why the fuck is too much memory used if I do StaticlED[512]??? Each StaticLED is also 3 bytes ffs.
   // init and shuffle
@@ -593,16 +637,10 @@ void LedCubeSequences::randomUntilAllOn(byte leds[8][8], int numLedsPerRound)
     randomizedLeds[randomIndex][1] = yTemp;
     randomizedLeds[randomIndex][2] = zTemp;
   }
-  for(int i=0; i<512/numLedsPerRound; i++)
+  for(int i=0; i<512; i++)
   {
-    for(int j=0; j<numLedsPerRound; j++)
-    {
-      int ind = i*numLedsPerRound + j;
-      LedCubeStills::on(leds, randomizedLeds[ind][0], randomizedLeds[ind][1], randomizedLeds[ind][2]);
-    }
-    delay(200);
+    LedCubeStills::on(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
   }
-  LedCubeStills::flood(leds); // get last remaining LEDs
 }
 
 // =====================================================================================================
@@ -625,13 +663,15 @@ void LedCubeSequences::randomBursts(byte leds[8][8], int numLedsPerRound, int nu
 // =====================================================================================================
 void LedCubeSequences::lettersAcrossPlanes(byte leds[8][8], char* letters, int length)
 {
+  int j = 0;
   for(int i=0; i<length; i++)
   {
-    for(int j=0; j<8; j++)
+    if(i==0) LedCubeStills::letter(leds, letters[i], 7); // start next letter at second last layer unless first letter
+    for(j=0; j<7; j++)
     {
-      LedCubeStills::clearAll(leds);
-      LedCubeStills::letter(leds, letters[i], 7-j);
       delay(100);
+      LedCubeSequences::moveLeds(leds, -1, 0, 0);
+      if(j==5 && (i+1)<length) LedCubeStills::letter(leds, letters[i+1], 7);
     }
   }
 }

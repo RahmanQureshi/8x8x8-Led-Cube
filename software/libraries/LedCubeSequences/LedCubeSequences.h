@@ -23,7 +23,8 @@ struct LED {
 class LedCubeSequences {
 	public:
 		static void sinWave(byte leds[8][8], int numCycles);
-		static void randomUntilAllOn(byte leds[8][8], int numLedsPerRound);
+    static void planarSinWave(byte leds[8][8]);
+		static void randomUntilAllOn(byte leds[8][8]);
 		static void randomBursts(byte leds[8][8], int numLedsPerRound, int numRounds);
 		static void launchFirework(byte leds[8][8]);
 		static void launchNFireworks(byte leds[8][8], int n);
@@ -36,6 +37,7 @@ class LedCubeSequences {
 		static void rain(byte leds[8][8]);
 		static void shiftAcrossFreezeContinue(byte leds[8][8], int xvel, int yvel, int zvel);
     static void miniCubeDance(byte leds[8][8]);
+    static void rotatingSymbol(byte leds[8][8]);
     static void moveLeds(byte leds[8][8], int x, int y, int z);
 	private:
 		static bool inBounds(int x, int y, int z);
