@@ -1,8 +1,20 @@
 #include "LedCubeStills.h"
 
+// private
+
+bool LedCubeStills::inBounds(int x, int y, int z)
+{
+  return (x >= 0 && x <= 7 
+    && y >= 0 && y <= 7
+    && z >= 0 && z <= 7);
+}
+
+//public
+
+
 void LedCubeStills::on(byte leds[8][8], int x, int y, int z)
 {
-  leds[z][y] |= 1<<x;
+  if (inBounds(x, y, z)) leds[z][y] |= 1<<x;
 }
 
 void LedCubeStills::off(byte leds[8][8], int x, int y, int z)
@@ -176,6 +188,14 @@ void LedCubeStills::letter(byte leds[8][8], char letter, int planeIndex)
 {
   switch(letter)
   {
+    case ' ': // Turn plane off
+      for(int z=0; z<8; z++)
+      {
+        for(int y=0; y<8; y++)
+        {
+          LedCubeStills::off(leds, planeIndex, y, z);
+        }
+      }
     case 'A':
       leds[0][1] |= 1 << planeIndex;
       leds[1][1] |= 1 << planeIndex;

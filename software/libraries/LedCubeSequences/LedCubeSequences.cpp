@@ -637,11 +637,74 @@ void LedCubeSequences::randomUntilAllOn(byte leds[8][8])
     randomizedLeds[randomIndex][1] = yTemp;
     randomizedLeds[randomIndex][2] = zTemp;
   }
-  for(int i=0; i<512; i++)
+  int i=0;
+  for(; i<250; i++)
   {
     LedCubeStills::on(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
+    delay(1);
+  }
+  for(; i<500; i++) 
+  {
+    LedCubeStills::on(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
+    delay(2);
+  }
+  for(; i<512; i++)
+  {
+    LedCubeStills::on(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
+    delay(10);
   }
 }
+
+// =====================================================================================================
+// randomUntilAllOff() 
+// =====================================================================================================
+void LedCubeSequences::randomUntilAllOff(byte leds[8][8])
+{
+  byte randomizedLeds[512][3]; // Why the fuck is too much memory used if I do StaticlED[512]??? Each StaticLED is also 3 bytes ffs.
+  // init and shuffle
+  for(int x=0; x<8; x++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        randomizedLeds[64*x+8*y+z][0] = x;
+        randomizedLeds[64*x+8*y+z][1] = y;
+        randomizedLeds[64*x+8*y+z][2] = z; 
+      }
+    }
+  }
+  for(int i=0; i<512; i++)
+  {
+    int randomIndex = random(0, 512);
+    byte xTemp = randomizedLeds[i][0];
+    byte yTemp = randomizedLeds[i][1];
+    byte zTemp = randomizedLeds[i][2];
+    randomizedLeds[i][0] = randomizedLeds[randomIndex][0];
+    randomizedLeds[i][1] = randomizedLeds[randomIndex][1];
+    randomizedLeds[i][2] = randomizedLeds[randomIndex][2];
+    randomizedLeds[randomIndex][0] = xTemp;
+    randomizedLeds[randomIndex][1] = yTemp;
+    randomizedLeds[randomIndex][2] = zTemp;
+  }
+  int i=0;
+  for(; i<250; i++)
+  {
+    LedCubeStills::off(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
+    delay(1);
+  }
+  for(; i<500; i++) 
+  {
+    LedCubeStills::off(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
+    delay(2);
+  }
+  for(; i<512; i++)
+  {
+    LedCubeStills::off(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
+    delay(10);
+  }
+}
+
 
 // =====================================================================================================
 // randomBurst() 
@@ -666,7 +729,7 @@ void LedCubeSequences::lettersAcrossPlanes(byte leds[8][8], char* letters, int l
   int j = 0;
   for(int i=0; i<length; i++)
   {
-    if(i==0) LedCubeStills::letter(leds, letters[i], 7); // start next letter at second last layer unless first letter
+    if(i==0) LedCubeStills::letter(leds, letters[i], 7); 
     for(j=0; j<7; j++)
     {
       delay(100);

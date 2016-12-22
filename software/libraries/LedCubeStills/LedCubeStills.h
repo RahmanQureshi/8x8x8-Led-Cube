@@ -23,6 +23,8 @@ class LedCubeStills {
 		static void tanslateDown(byte leds[8][8]);
 		static void on(byte leds[8][8], int x, int y, int z);
 		static void off(byte leds[8][8], int x, int y, int z);
+  private:
+    static bool inBounds(int x, int y, int z);
 };
 
 #endif

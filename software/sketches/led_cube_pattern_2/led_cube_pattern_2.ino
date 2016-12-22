@@ -42,7 +42,7 @@ void setup()
   // Cube Initialization End
   
   LedCubeSequences::lettersAcrossPlanes(leds, "PEY2016", 7);
-  delay(500);  
+  delay(1000);  
 }
 
 void loop()
@@ -51,9 +51,23 @@ void loop()
   LedCubeSequences::randomBursts(leds, 100, 10);
   LedCubeSequences::randomBursts(leds, 150, 10);
   LedCubeSequences::randomBursts(leds, 200, 10);
-  LedCubeSequences::randomUntilAllOn(leds, 30);
-  delay(1000); 
-  LedCubeSequences::flash(leds, 400, 5);
+  
+  LedCubeSequences::randomUntilAllOn(leds);
+  LedCubeSequences::randomUntilAllOff(leds);
+  LedCubeSequences::randomUntilAllOn(leds);
+  LedCubeSequences::randomUntilAllOff(leds);
+  LedCubeSequences::randomUntilAllOn(leds);
+  LedCubeSequences::randomUntilAllOff(leds);
+  LedCubeSequences::randomUntilAllOn(leds);
+  LedCubeSequences::randomUntilAllOff(leds);
+  LedCubeSequences::randomUntilAllOn(leds);
+  LedCubeSequences::randomUntilAllOff(leds);
+  delay(500);
+  for(int i=400; i>25; i=i-25)
+  {
+    LedCubeSequences::flash(leds, i, 1);
+  }
+  LedCubeSequences::flash(leds, 25, 80);
   delay(2000);
  
   LedCubeStills::clearAll(leds);
@@ -94,7 +108,6 @@ void loop()
   delay(1000);
   
   LedCubeStills::clearAll(leds);
-  LedCubeSequences::miniCubeDance(leds);
   LedCubeSequences::miniCubeDance(leds);
   LedCubeSequences::miniCubeDance(leds);
   delay(500);

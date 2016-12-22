@@ -25,6 +25,7 @@ class LedCubeSequences {
 		static void sinWave(byte leds[8][8], int numCycles);
     static void planarSinWave(byte leds[8][8]);
 		static void randomUntilAllOn(byte leds[8][8]);
+    static void randomUntilAllOff(byte leds[8][8]);
 		static void randomBursts(byte leds[8][8], int numLedsPerRound, int numRounds);
 		static void launchFirework(byte leds[8][8]);
 		static void launchNFireworks(byte leds[8][8], int n);
