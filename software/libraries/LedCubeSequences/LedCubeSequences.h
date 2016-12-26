@@ -42,6 +42,7 @@ class LedCubeSequences {
     static void moveLeds(byte leds[8][8], int x, int y, int z);
     static void planeDance1(byte leds[8][8]);
     static void planeDance2(byte leds[8][8]);
+    static void planeDance3(byte leds[8][8]);
 	private:
 		static bool inBounds(int x, int y, int z);
 		static bool isLedOn(byte leds[8][8], int x, int y, int z);

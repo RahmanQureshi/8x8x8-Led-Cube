@@ -92,20 +92,36 @@ void LedCubeSequences::rotatingSymbol(byte leds[8][8])
 // =====================================================================================================
 void LedCubeSequences::moveLeds(byte leds[8][8], int x, int y, int z)
 {
-  int numLedsOn = getNumLedsOn(leds);
-  LED ledList[numLedsOn];
-  fillLedList(leds, ledList);
-  LedCubeStills::clearAll(leds);
-  for(int i=0; i<numLedsOn; i++)
+  byte LEDs[512][3]; // Why the fuck is too much memory used if I do StaticlED[512]??? Each StaticLED is also 3 bytes ffs.
+  // init and shuffle
+  int numLeds = 0;
+  for(int x=0; x<8; x++)
   {
-    ledList[i].x += x;
-    ledList[i].y += y;
-    ledList[i].z += z;
-    LedCubeStills::on(leds, ledList[i].x, ledList[i].y, ledList[i].z);
+    for(int y=0; y<8; y++)
+    {
+      for(int z=0; z<8; z++)
+      {
+        if(isLedOn(leds, x, y, z))
+        {
+          LEDs[numLeds][0] = x;
+          LEDs[numLeds][1] = y;
+          LEDs[numLeds][2] = z;
+          numLeds++; 
+        }
+      }
+    }
+  }
+  LedCubeStills::clearAll(leds);
+  for(int i=0; i<numLeds; i++)
+  {
+    LEDs[i][0] += x;
+    LEDs[i][1] += y;
+    LEDs[i][2] += z; 
+    LedCubeStills::on(leds, LEDs[i][0], LEDs[i][1], LEDs[i][2]);
   }
 }
 
-void LedCubeSequences::planeDance1(byte leds[8][8])
+void LedCubeSequences::planeDance2(byte leds[8][8])
 {
   for(int x=0; x<8; x++)
   {
@@ -170,7 +186,73 @@ void LedCubeSequences::planeDance1(byte leds[8][8])
   }
 }
 
-void LedCubeSequences::planeDance2(byte leds[8][8])
+// =====================================================================================================
+// planeDance3()
+// Description: A dance. This perfectly transitions into miniCubeDance!!
+// =====================================================================================================
+
+void LedCubeSequences::planeDance3(byte leds[8][8])
+{
+  LedCubeStills::flood(leds);
+  int mDelay = 50;
+  delay(100);
+  for(int i=0; i<8; i++)
+  {
+    LedCubeSequences::moveLeds(leds, 1, 1, 1);
+    delay(mDelay);
+  }
+  LedCubeStills::flood(leds);
+  delay(100);
+  for(int i=0; i<8; i++)
+  {
+    LedCubeSequences::moveLeds(leds, 1, 1, -1);
+    delay(mDelay);
+  }
+  LedCubeStills::flood(leds);
+  delay(100);
+  for(int i=0; i<8; i++)
+  {
+    LedCubeSequences::moveLeds(leds, 1, -1, 1);
+    delay(mDelay);
+  }
+  LedCubeStills::flood(leds);
+  delay(100);
+  for(int i=0; i<8; i++)
+  {
+    LedCubeSequences::moveLeds(leds, -1, 1, 1);
+    delay(mDelay);
+  }
+  LedCubeStills::flood(leds);
+  delay(100);
+  for(int i=0; i<8; i++)
+  {
+    LedCubeSequences::moveLeds(leds, -1, -1, 1);
+    delay(mDelay);
+  }
+  LedCubeStills::flood(leds);
+  delay(100);
+  for(int i=0; i<8; i++)
+  {
+    LedCubeSequences::moveLeds(leds, -1, 1, -1);
+    delay(mDelay);
+  }
+  LedCubeStills::flood(leds);
+  delay(100);
+  for(int i=0; i<8; i++)
+  {
+    LedCubeSequences::moveLeds(leds, 1, -1, -1);
+    delay(mDelay);
+  }
+  LedCubeStills::flood(leds);
+  delay(100);
+  for(int i=0; i<3; i++) // ends early to transition into miniCubeDance
+  {
+    LedCubeSequences::moveLeds(leds, -1, -1, -1);
+    delay(mDelay);
+  }
+}
+
+void LedCubeSequences::planeDance1(byte leds[8][8])
 {
   LedCubeStills::yzPlane(leds, 0);
   for(int j=0; j<3; j++)
@@ -224,7 +306,6 @@ void LedCubeSequences::planeDance2(byte leds[8][8])
 // =====================================================================================================
 void LedCubeSequences::miniCubeDance(byte leds[8][8])
 {
-  LedCubeStills::clearAll(leds);
   //side
   LedCubeStills::on(leds, 0, 0, 0);
   LedCubeStills::on(leds, 1, 0, 0);
@@ -283,7 +364,6 @@ void LedCubeSequences::miniCubeDance(byte leds[8][8])
   LedCubeStills::on(leds, 4, 0, 1);
   LedCubeStills::on(leds, 4, 0, 2);
   LedCubeStills::on(leds, 4, 0, 3);
-
 
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 1, 0, 0); delay(50); }
   for(int i=0; i<3; i++) { LedCubeSequences::moveLeds(leds, 0, 1, 0); delay(50); }
