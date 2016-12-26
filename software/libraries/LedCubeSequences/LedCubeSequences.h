@@ -26,7 +26,7 @@ class LedCubeSequences {
     static void planarSinWave(byte leds[8][8]);
 		static void randomUntilAllOn(byte leds[8][8]);
     static void randomUntilAllOff(byte leds[8][8]);
-		static void randomBursts(byte leds[8][8], int numLedsPerRound, int numRounds);
+		static void randomBursts(byte leds[8][8], int numLedsPerRound, int numRounds, int delayLength);
 		static void launchFirework(byte leds[8][8]);
 		static void launchNFireworks(byte leds[8][8], int n);
 		static void lettersAcrossPlanes(byte leds[8][8], char* letters, int length);
@@ -40,6 +40,8 @@ class LedCubeSequences {
     static void miniCubeDance(byte leds[8][8]);
     static void rotatingSymbol(byte leds[8][8]);
     static void moveLeds(byte leds[8][8], int x, int y, int z);
+    static void planeDance1(byte leds[8][8]);
+    static void planeDance2(byte leds[8][8]);
 	private:
 		static bool inBounds(int x, int y, int z);
 		static bool isLedOn(byte leds[8][8], int x, int y, int z);

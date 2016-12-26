@@ -105,6 +105,119 @@ void LedCubeSequences::moveLeds(byte leds[8][8], int x, int y, int z)
   }
 }
 
+void LedCubeSequences::planeDance1(byte leds[8][8])
+{
+  for(int x=0; x<8; x++)
+  {
+    LedCubeStills::yzPlane(leds, x);
+    delay(50);
+  }
+  for(int x=0; x<8; x++)
+  {
+    LedCubeStills::yzPlaneOff(leds, x);
+    delay(50);
+  }
+  for(int y=0; y<8; y++)
+  {
+    LedCubeStills::xzPlane(leds, y);
+    delay(50);
+  }
+  for(int y=0; y<8; y++)
+  {
+    LedCubeStills::xzPlaneOff(leds, y);
+    delay(50);
+  }
+  for(int z=0; z<8; z++)
+  {
+    LedCubeStills::xyPlane(leds, z);
+    delay(50);
+  }
+  for(int z=0; z<8; z++)
+  {
+    LedCubeStills::xyPlaneOff(leds, z);
+    delay(50);
+  }
+  
+  for(int x=0; x<8; x++)
+  {
+    LedCubeStills::yzPlane(leds, 7-x);
+    delay(50);
+  }
+  for(int x=0; x<8; x++)
+  {
+    LedCubeStills::yzPlaneOff(leds, 7-x);
+    delay(50);
+  }
+  for(int y=0; y<8; y++)
+  {
+    LedCubeStills::xzPlane(leds, 7-y);
+    delay(50);
+  }
+  for(int y=0; y<8; y++)
+  {
+    LedCubeStills::xzPlaneOff(leds, 7-y);
+    delay(50);
+  }
+  for(int z=0; z<8; z++)
+  {
+    LedCubeStills::xyPlane(leds, 7-z);
+    delay(50);
+  }
+  for(int z=0; z<8; z++)
+  {
+    LedCubeStills::xyPlaneOff(leds, 7-z);
+    delay(50);
+  }
+}
+
+void LedCubeSequences::planeDance2(byte leds[8][8])
+{
+  LedCubeStills::yzPlane(leds, 0);
+  for(int j=0; j<3; j++)
+  {
+    for(int i=0; i<7; i++)
+    {
+      LedCubeSequences::moveLeds(leds, 1, 0, 0);
+      delay(50);
+    }
+    for(int i=0; i<7; i++)
+    {
+      LedCubeSequences::moveLeds(leds, -1, 0, 0);
+      delay(50);
+    }
+  }
+  LedCubeStills::clearAll(leds);
+  LedCubeStills::xzPlane(leds, 0);
+  for(int j=0; j<3; j++)
+  {
+    for(int i=0; i<7; i++)
+    {
+      LedCubeSequences::moveLeds(leds, 0, 1, 0);
+      delay(50);
+    }
+    for(int i=0; i<7; i++)
+    {
+      LedCubeSequences::moveLeds(leds, 0, -1, 0);
+      delay(50);
+    }
+  }
+  LedCubeStills::clearAll(leds);
+  LedCubeStills::xyPlane(leds, 0);
+  for(int j=0; j<3; j++)
+  {
+    for(int i=0; i<7; i++)
+    {
+      LedCubeSequences::moveLeds(leds, 0, 0, 1);
+      delay(50);
+    }
+    for(int i=0; i<7; i++)
+    {
+      LedCubeSequences::moveLeds(leds, 0, 0, -1);
+      delay(50);
+    }
+  }
+}
+
 // =====================================================================================================
 // miniCubeDance
 // Description: Initializes a miniture 5x5x5 cube and moves it around
@@ -646,12 +759,12 @@ void LedCubeSequences::randomUntilAllOn(byte leds[8][8])
   for(; i<500; i++) 
   {
     LedCubeStills::on(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
-    delay(2);
+    delay(1);
   }
   for(; i<512; i++)
   {
     LedCubeStills::on(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
-    delay(10);
+    delay(1);
   }
 }
 
@@ -696,12 +809,12 @@ void LedCubeSequences::randomUntilAllOff(byte leds[8][8])
   for(; i<500; i++) 
   {
     LedCubeStills::off(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
-    delay(2);
+    delay(1);
   }
   for(; i<512; i++)
   {
     LedCubeStills::off(leds, randomizedLeds[i][0], randomizedLeds[i][1], randomizedLeds[i][2]);
-    delay(10);
+    delay(1);
   }
 }
 
@@ -710,12 +823,12 @@ void LedCubeSequences::randomUntilAllOff(byte leds[8][8])
 // randomBurst() 
 // Description: Turns on numLedsPerRound each round 
 // =====================================================================================================
-void LedCubeSequences::randomBursts(byte leds[8][8], int numLedsPerRound, int numRounds)
+void LedCubeSequences::randomBursts(byte leds[8][8], int numLedsPerRound, int numRounds, int delayLength)
 {
   for(int i=0; i < numRounds; i++)
   {
     LedCubeStills::randomLeds(leds, numLedsPerRound);
-    delay(200);
+    delay(delayLength);
     LedCubeStills::clearAll(leds);
   }
 }

@@ -39,7 +39,27 @@ void LedCubeStills::xyPlane(byte leds[8][8], int planeIndex)
         leds[i][j] |= 0b11111111;
       } else 
       {
-        leds[i][j] |= 0b00000000;
+        //leds[i][j] |= 0b00000000;
+      }
+    }
+  }
+}
+
+// =====================================================================================================
+// horizontalPlane() 
+// Description: Turns on the ith xy plane.
+// Parameters:
+//  i - integer {0..7} - plane index starting from the bottom to the top
+// =====================================================================================================
+void LedCubeStills::xyPlaneOff(byte leds[8][8], int planeIndex)
+{
+  for(int i = 0; i < 8; i++)
+  {
+    for(int j = 0; j < 8; j++)
+    {
+      if(i == planeIndex)
+      {
+        leds[i][j] = 0b00000000;
       }
     }
   }
@@ -62,11 +82,35 @@ void LedCubeStills::xzPlane(byte leds[8][8], int planeIndex)
         leds[i][j] |= 0b11111111;
       } else
       {
-        leds[i][j] |= 0b00000000;
+        //leds[i][j] |= 0b00000000;
       }
     }
   }
 }
+
+// =====================================================================================================
+// xzPlane() 
+// Description: Turns on the ith xz plane.
+// Parameters:
+//  i - integer {0..7} - plane index starting from the bottom to the top
+// =====================================================================================================
+void LedCubeStills::xzPlaneOff(byte leds[8][8], int planeIndex)
+{
+  for(int i = 0; i < 8; i++)
+  {
+    for(int j = 0; j < 8; j++)
+    {
+      if(j == planeIndex) 
+      {
+        leds[i][j] = 0b00000000;
+      } else
+      {
+        //leds[i][j] |= 0b00000000;
+      }
+    }
+  }
+}
+
 
 // =====================================================================================================
 // yzPlane() 
@@ -84,6 +128,24 @@ void LedCubeStills::yzPlane(byte leds[8][8], int planeIndex)
     }
   }
 }
+
+// =====================================================================================================
+// yzPlane() 
+// Description: Turns on the ith yz plane.
+// Parameters:
+//  i - integer {0..7} - plane index starting from the bottom to the top
+// =====================================================================================================
+void LedCubeStills::yzPlaneOff(byte leds[8][8], int planeIndex)
+{
+  for(int i = 0; i < 8; i++)
+  {
+    for(int j = 0; j < 8; j++)
+    {
+      LedCubeStills::off(leds, planeIndex, j, i);
+    }
+  }
+}
+
 
 // =====================================================================================================
 // flood() 
