@@ -78,6 +78,10 @@ void loop()
   LedCubeStills::clearAll(leds);
   LedCubeSequences::rain(leds);
   
+  LedCubeStills::clearAll(leds);
+  delay(1000);
+  LedCubeSequences::shiftingCrystal(leds, 35);  
+  
   //ShiftAcrossFreeze
   LedCubeStills::clearAll(leds);
   LedCubeStills::xyPlane(leds, 7);
@@ -113,6 +117,14 @@ void loop()
   LedCubeSequences::shiftAcrossFreezeContinue(leds, 0, -1, 0);
   delay(1000);
   
+  LedCubeStills::clearAll(leds);
+  LedCubeSequences::rotatingSymbol(leds);
+ 
+  LedCubeStills::clearAll(leds);
+  LedCubeSequences::planarSinWave(leds, 30);
+  
+  LedCubeStills::clearAll(leds);
+  LedCubeSequences::sinWave(leds, 30);
   
   LedCubeStills::clearAll(leds);
   delay(1000);
@@ -122,11 +134,12 @@ void loop()
   delay(500);
   LedCubeSequences::miniCubeDance(leds);
   LedCubeSequences::miniCubeDance(leds);
-
+  
   // Fireworks
   for(int i=0; i<10; i++) {
     LedCubeStills::clearAll(leds);
-    LedCubeSequences::launchNFireworks(leds, random(1, 3));
+    LedCubeSequences::launchNFireworks(leds, random(1, 4));
+    delay(200);
   }
 
 }

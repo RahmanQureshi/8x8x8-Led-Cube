@@ -19,7 +19,7 @@ void LedCubeStills::on(byte leds[8][8], int x, int y, int z)
 
 void LedCubeStills::off(byte leds[8][8], int x, int y, int z)
 {
-  leds[z][y] &= ~(1<<x);
+  if (inBounds(x, y, z)) leds[z][y] &= ~(1<<x);
 }
 
 // =====================================================================================================

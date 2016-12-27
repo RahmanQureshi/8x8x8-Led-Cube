@@ -55,34 +55,116 @@ int LedCubeSequences::fillLedList(byte ledArray[8][8], LED ledList[128])
 /* Public */
 
 // =====================================================================================================
-// rotatingsyMBOL
+// shiftingCrystal
+// Description: randomly turns on LEDs on the yz plane and selects some and shifts them across x
+// =====================================================================================================
+void LedCubeSequences::shiftingCrystal(byte leds[8][8], int n)
+{
+  // init cube
+  for(int y=0; y<8; y++)
+  {
+    for(int z=0; z<8; z++)
+    {
+      int x = random(0, 8);
+      LedCubeStills::on(leds, x, y, z);
+    }
+  }
+  delay(1000);
+  // get LEDs
+  int numLedsOn = getNumLedsOn(leds);
+  MobileLED LEDs[numLedsOn];
+  int i = 0;
+  for(int z=0; z<8; z++)
+  {
+    for(int y=0; y<8; y++)
+    {
+      for(int x=0; x<8; x++)
+      {
+        if(isLedOn(leds, x, y, z))
+        {
+          LEDs[i].x = x;
+          LEDs[i].y = y;
+          LEDs[i].z = z;
+          i = i+1;
+        }
+      }
+    }
+  }
+  // randomly select n and shift
+  int numBackAndForth = 10;
+  int selectedLEDs[n];
+
+  for(int p=0; p<numBackAndForth; p++)
+  {
+    for(int j=0; j<n; j++)
+    {
+      selectedLEDs[j] = random(0, numLedsOn);
+      if(LEDs[selectedLEDs[j]].x > 3) LEDs[selectedLEDs[j]].xvel = -1;
+      else LEDs[selectedLEDs[j]].xvel = +1;
+    }
+    int numShifts = 4;
+    for(int k=0; k<numShifts; k++)
+    {
+      for(int j=0; j<n; j++)
+      {
+        LedCubeStills::off(leds, LEDs[selectedLEDs[j]].x, LEDs[selectedLEDs[j]].y, LEDs[selectedLEDs[j]].z);
+        if(inBounds(LEDs[selectedLEDs[j]].x + LEDs[selectedLEDs[j]].xvel, 0, 0)) LEDs[selectedLEDs[j]].x += LEDs[selectedLEDs[j]].xvel;
+        LedCubeStills::on(leds, LEDs[selectedLEDs[j]].x, LEDs[selectedLEDs[j]].y, LEDs[selectedLEDs[j]].z);
+      }
+      delay(60);
+    }
+    delay(600);
+  }
+}
+
+// =====================================================================================================
+// rotatingSymbol
 // =====================================================================================================
 void LedCubeSequences::rotatingSymbol(byte leds[8][8])
 {
   LedCubeStills::clearAll(leds);
   LedCubeStills::on(leds, 3, 3, 0);
   LedCubeStills::on(leds, 3, 3, 1);
+  LedCubeStills::on(leds, 3, 3, 6);
   LedCubeStills::on(leds, 3, 3, 2);
+  LedCubeStills::on(leds, 3, 3, 3);
+  LedCubeStills::on(leds, 3, 3, 4);
+  LedCubeStills::on(leds, 3, 3, 7);
+  LedCubeStills::on(leds, 3, 3, 5);
   LedCubeStills::on(leds, 2, 2, 0);
+  LedCubeStills::on(leds, 2, 2, 1);
+  LedCubeStills::on(leds, 2, 2, 6);
+  LedCubeStills::on(leds, 2, 2, 7);
   LedCubeStills::on(leds, 1, 1, 0);
   LedCubeStills::on(leds, 1, 1, 1);
-  LedCubeStills::on(leds, 0, 0, 1);
-  LedCubeStills::on(leds, 0, 0, 2);
-  LedCubeStills::on(leds, 0, 0, 7);
-  LedCubeStills::on(leds, 0, 0, 6);
+  LedCubeStills::on(leds, 1, 1, 3);
+  LedCubeStills::on(leds, 1, 1, 4);
+  LedCubeStills::on(leds, 1, 1, 2);
+  LedCubeStills::on(leds, 1, 1, 7);
+  LedCubeStills::on(leds, 1, 1, 6);
 
   LedCubeStills::on(leds, 4, 4, 0);
   LedCubeStills::on(leds, 4, 4, 1);
   LedCubeStills::on(leds, 4, 4, 2);
+  LedCubeStills::on(leds, 4, 4, 6);
+  LedCubeStills::on(leds, 4, 4, 3);
+  LedCubeStills::on(leds, 4, 4, 4);
+  LedCubeStills::on(leds, 4, 4, 7);
+  LedCubeStills::on(leds, 4, 4, 5);
   LedCubeStills::on(leds, 5, 5, 0);
+  LedCubeStills::on(leds, 5, 5, 1);
+  LedCubeStills::on(leds, 5, 5, 6);
+  LedCubeStills::on(leds, 5, 5, 7);
   LedCubeStills::on(leds, 6, 6, 0);
   LedCubeStills::on(leds, 6, 6, 1);
-  LedCubeStills::on(leds, 7, 7, 1);
-  LedCubeStills::on(leds, 7, 7, 2);
-  LedCubeStills::on(leds, 7, 7, 7);
-  LedCubeStills::on(leds, 7, 7, 6);
-
-  LedCubeSequences::rotateCenterZ(leds, 0.2, 90, 100); // About 3 circles. 0.2*90 = 6*2pi
+  LedCubeStills::on(leds, 6, 6, 3);
+  LedCubeStills::on(leds, 6, 6, 4);
+  LedCubeStills::on(leds, 6, 6, 2);
+  LedCubeStills::on(leds, 6, 6, 7);
+  LedCubeStills::on(leds, 6, 6, 6);
+  
+  LedCubeSequences::rotateCenterZ(leds, 0.199466, 200, 25); // About 5 circles
+  LedCubeSequences::rotateCenterZ(leds, -0.199466, 200, 25); // About 5 circles
   
 }
 
@@ -546,25 +628,51 @@ void LedCubeSequences::rain(byte leds[8][8])
 
 // =====================================================================================================
 // planarSinWave() 
-// Description: Runs a wave in the y-axis for 5 wavelengths.
+// Description:
 // Parameters:
-//  wavelength - in inches (or the distance between LEDs)
-// =====================================================================================================
-void LedCubeSequences::planarSinWave(byte leds[8][8])
+/// =====================================================================================================
+void LedCubeSequences::planarSinWave(byte leds[8][8], int numCycles)
 {
-  
-  
+  int wavelength = 100; // something big because t is moving in digits
+  for(int t=0; t<numCycles*wavelength; t++)
+  {
+    LedCubeStills::clearAll(leds);
+    for(int r=0; r<=3; r++)
+    {
+      int z = 3.5*sin(2*3.14*t/wavelength + r) + 3.5 + 0.5; // +0.5 for rounding
+      for(int x=r; x<=(7-r); x++)
+      {
+        int y = r;
+        LedCubeStills::on(leds, x, y, z);
+      }
+      for(int y=r; y<=(7-r); y++)
+      {
+        int x = r;
+        LedCubeStills::on(leds, x, y, z);
+      }
+      for(int x=r; x<=(7-r); x++)
+      {
+        int y = (7-r);
+        LedCubeStills::on(leds, x, y, z);
+      }
+      for(int y=r; y<=(7-r); y++)
+      {
+        int x = (7-r);
+        LedCubeStills::on(leds, x, y, z);
+      }
+    }
+    delay(4);
+  } 
 }
 
 // =====================================================================================================
 // sinWave() 
-// Description: Runs a wave in the y-axis for 5 wavelengths.
+// Description: Runs a wave in the y-axis for numCycles cycles
 // Parameters:
-//  wavelength - in inches (or the distance between LEDs)
 // =====================================================================================================
 void LedCubeSequences::sinWave(byte leds[8][8], int numCycles)
 {
-  int wavelength = 100;
+  int wavelength = 100; // something big because t is moving in digits
   for(int t=0; t<wavelength*numCycles; t++)
   {
     for(int i=0; i<8; i++) 
@@ -573,7 +681,7 @@ void LedCubeSequences::sinWave(byte leds[8][8], int numCycles)
       int z = 3.5*sin(2*3.14*t/wavelength + i)+3.5 + 0.5; // +0.5 for rounding
       leds[z][y] = 255;
     }
-    delay(5);
+    delay(6);
     LedCubeStills::clearAll(leds);
   }
 }
@@ -775,8 +883,11 @@ void LedCubeSequences::launchNFireworks(byte leds[8][8], int n)
     {
       if(rising[f]==1) // fireworks rising
       {
-        leds[zvec[f]][yvec[f]] |= 1<<xvec[f];
+        LedCubeStills::on(leds, xvec[f], yvec[f], zvec[f]);
         zvec[f]++;
+        if(zvec[f] > 3) {
+          LedCubeStills::off(leds, xvec[f], yvec[f], zvec[f]-4);
+        }
         if(zvec[f]==heightvec[f]) rising[f] = 0;
       } else // exploding
       {
@@ -793,7 +904,7 @@ void LedCubeSequences::launchNFireworks(byte leds[8][8], int n)
         }
       }
     }
-    delay(100);
+    delay(75);
   }
 }
 
