@@ -10,7 +10,34 @@ bool LedCubeStills::inBounds(int x, int y, int z)
 }
 
 //public
+// =====================================================================================================
+// happyFace()
+// Description: Draws on x plane
+// =====================================================================================================
 
+void LedCubeStills::happyFace(byte leds[8][8], int planeIndex)
+{
+  LedCubeStills::on(leds, planeIndex, 1, 6); // eyes
+  LedCubeStills::on(leds, planeIndex, 1, 5);
+  LedCubeStills::on(leds, planeIndex, 2, 6);
+  LedCubeStills::on(leds, planeIndex, 2, 5);
+
+  LedCubeStills::on(leds, planeIndex, 5, 5);
+  LedCubeStills::on(leds, planeIndex, 5, 6);
+  LedCubeStills::on(leds, planeIndex, 6, 5);
+  LedCubeStills::on(leds, planeIndex, 6, 6);
+
+  LedCubeStills::on(leds, planeIndex, 0, 2);
+  LedCubeStills::on(leds, planeIndex, 1, 1);
+
+  LedCubeStills::on(leds, planeIndex, 2, 0);
+  LedCubeStills::on(leds, planeIndex, 3, 0);
+  LedCubeStills::on(leds, planeIndex, 4, 0);
+  LedCubeStills::on(leds, planeIndex, 5, 0);
+
+  LedCubeStills::on(leds, planeIndex, 6, 1);
+  LedCubeStills::on(leds, planeIndex, 7, 2);
+} 
 
 void LedCubeStills::on(byte leds[8][8], int x, int y, int z)
 {

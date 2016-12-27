@@ -45,14 +45,16 @@ void setup()
 
 void loop()
 {
+  LedCubeStills::clearAll(leds);
+  LedCubeSequences::planeDance2(leds);
+  
+  LedCubeStills::clearAll(leds);
   LedCubeSequences::lettersAcrossPlanes(leds, "PEY2016", 7);
   
   // Random Bursts
-  LedCubeSequences::randomBursts(leds, 125, 10, 350);
-  LedCubeSequences::randomBursts(leds, 125, 10, 300);
-  LedCubeSequences::randomBursts(leds, 125, 10, 250);
-  LedCubeSequences::randomBursts(leds, 125, 10, 200);
-  LedCubeSequences::randomBursts(leds, 125, 20, 100);
+  LedCubeSequences::randomBursts(leds, 125, 30, 300);
+  
+  LedCubeSequences::transition(leds);
   
   // Random Until All On
   LedCubeSequences::randomUntilAllOn(leds);
@@ -66,30 +68,19 @@ void loop()
   LedCubeSequences::randomUntilAllOn(leds);
   LedCubeSequences::randomUntilAllOff(leds);
   LedCubeSequences::randomUntilAllOn(leds);
+  LedCubeSequences::randomUntilAllOff(leds);
 
-  // Flashing
-  for(int i=400; i>50; i=i-25)
-  {
-    LedCubeSequences::flash(leds, i, 1);
-  }
-  LedCubeSequences::flash(leds, 50, 40);
-  delay(2000);
- 
+  LedCubeSequences::transition(leds);
+
    // Rain
   LedCubeStills::clearAll(leds);
   LedCubeSequences::rain(leds);
-  
-  LedCubeStills::clearAll(leds);
-  delay(1000);
-  LedCubeSequences::shiftingCrystal(leds, 35);  
+    
+  LedCubeSequences::transition(leds);
   
   //ShiftAcrossFreeze
   LedCubeStills::clearAll(leds);
   LedCubeStills::xyPlane(leds, 7);
-  delay(500);
-  LedCubeSequences::shiftAcrossFreezeContinue(leds, 0, 0, -1);
-  delay(500);
-  LedCubeSequences::shiftAcrossFreezeContinue(leds, 0, 0, 1);
   delay(500);
   LedCubeSequences::shiftAcrossFreezeContinue(leds, 0, 0, -1);
   delay(500);
@@ -104,10 +95,6 @@ void loop()
   for(int i=0; i<(7*17); i++) { delay(25); LedCubeSequences::rotateCenterZ(leds); } 
   delay(1000);
   LedCubeSequences::shiftAcrossFreezeContinue(leds, -1, 0, 0); 
-  delay(500);
-  LedCubeSequences::shiftAcrossFreezeContinue(leds, 1, 0, 0); 
-  delay(500);
-  LedCubeSequences::shiftAcrossFreezeContinue(leds, -1, 0, 0); 
   delay(1000);
   for(int i=0; i<(7*17); i++) { delay(25); LedCubeSequences::rotateCenterZ(leds); } 
   delay(1000);
@@ -116,34 +103,48 @@ void loop()
   LedCubeSequences::shiftAcrossFreezeContinue(leds, 0, 1, 0);
   delay(500);
   LedCubeSequences::shiftAcrossFreezeContinue(leds, 0, -1, 0);
-  delay(1000);
   
+  LedCubeSequences::transition(leds);
+  
+  LedCubeStills::clearAll(leds);
+  LedCubeSequences::shiftingCrystal(leds, 50);
+  
+  LedCubeSequences::transition(leds);
+
   LedCubeStills::clearAll(leds);
   LedCubeSequences::rotatingSymbol(leds);
- 
+  
+  LedCubeSequences::transition(leds);
+
   LedCubeStills::clearAll(leds);
-  LedCubeSequences::planarSinWave(leds, 30);
+  LedCubeSequences::planarSinWave(leds, 20);
+  
+  LedCubeSequences::transition(leds); 
   
   LedCubeStills::clearAll(leds);
-  LedCubeSequences::sinWave(leds, 30);
+  LedCubeSequences::sinWave(leds, 20);
   
-  LedCubeStills::clearAll(leds);
-  delay(1000);
-  LedCubeSequences::planeDance1(leds);
-  LedCubeSequences::planeDance2(leds);
-  LedCubeSequences::planeDance2(leds);
+  LedCubeSequences::transition(leds);  
+  
   LedCubeSequences::planeDance3(leds);
   delay(500);
   LedCubeSequences::miniCubeDance(leds);
-  LedCubeSequences::miniCubeDance(leds);
-  
+
+  LedCubeSequences::transition(leds);
+
   // Fireworks
-  for(int i=0; i<10; i++) {
+  for(int i=0; i<20; i++) {
     LedCubeStills::clearAll(leds);
     LedCubeSequences::launchNFireworks(leds, random(1, 4));
     delay(200);
   }
-
+  
+  LedCubeStills::clearAll(leds);
+  delay(1000);
+  LedCubeSequences::lettersAcrossPlanes(leds, "TY", 2);
+  delay(1000);
+  LedCubeStills::happyFace(leds, 0);
+  delay(5000);
 }
 
 ISR(TIMER2_COMPA_vect) 

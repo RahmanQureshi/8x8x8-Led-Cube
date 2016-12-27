@@ -203,6 +203,23 @@ void LedCubeSequences::moveLeds(byte leds[8][8], int x, int y, int z)
   }
 }
 
+void LedCubeSequences::transition(byte leds[8][8])
+{
+  LedCubeStills::clearAll(leds);
+  delay(100);
+  for(int x=0; x<8; x++)
+  {
+    LedCubeStills::xzPlane(leds, x);
+    delay(50);
+  }
+  for(int x=0; x<8; x++)
+  {
+    LedCubeStills::xzPlaneOff(leds, x);
+    delay(50);
+  }
+  delay(300);
+}
+
 void LedCubeSequences::planeDance2(byte leds[8][8])
 {
   for(int x=0; x<8; x++)
@@ -592,7 +609,7 @@ void LedCubeSequences::shiftAcrossFreezeContinue(byte leds[8][8], int xvel, int 
         LedCubeStills::on(leds, LEDs[i].x, LEDs[i].y, LEDs[i].z);
       }
     }
-    delay(25);
+    delay(50); // 50 because visually, it's weird, it looks like its going faster than before if it's 25
   }
 }
 
@@ -661,7 +678,7 @@ void LedCubeSequences::planarSinWave(byte leds[8][8], int numCycles)
         LedCubeStills::on(leds, x, y, z);
       }
     }
-    delay(4);
+    delay(8);
   } 
 }
 
@@ -1241,6 +1258,6 @@ void LedCubeSequences::xy0Toxz0(byte leds[8][8])
         leds[0][y] = 0b00000000;
       }
     }
-    delay(25);
+    delay(50);
   }
 }

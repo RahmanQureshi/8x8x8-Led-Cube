@@ -22,6 +22,7 @@ struct LED {
 
 class LedCubeSequences {
 	public:
+    static void transition(byte leds[8][8]);
     static void shiftingCrystal(byte leds[8][8], int numLEDs);
 		static void sinWave(byte leds[8][8], int numCycles);
     static void planarSinWave(byte leds[8][8], int numCycles);

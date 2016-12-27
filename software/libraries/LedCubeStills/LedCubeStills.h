@@ -12,6 +12,7 @@ struct StaticLED {
 
 class LedCubeStills {
 	public:
+    static void happyFace(byte leds[8][8], int planeIndex);
 		static void xyPlane(byte leds[8][8], int planeIndex);
     static void xyPlaneOff(byte leds[8][8], int planeIndex);
 		static void xzPlane(byte leds[8][8], int planeIndex);
